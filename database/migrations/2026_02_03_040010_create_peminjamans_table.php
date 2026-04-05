@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('peminjamans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('users');
-            $table->foreignId('id_alat')->constrained('alats');
             $table->date('tgl_pinjam');
             $table->date('tgl_kembali');
-            $table->enum('status', ['menunggu','disetujui','ditolak','dikembalikan'])->default('menunggu');
+            $table->enum('status', ['menunggu', 'disetujui', 'ditolak', 'dibatalkan', 'kadaluarsa', 'dikembalikan'])->default('menunggu');
+            $table->integer('total_denda')->default(0);
+            $table->enum('status_denda', ['tidak_ada','belum','lunas'])->default('tidak_ada');
             $table->timestamps();
         });
     }
