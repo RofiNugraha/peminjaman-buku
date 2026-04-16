@@ -14,38 +14,50 @@ class RegisterController extends Controller
         return view('auth.register');
     }
 
-    public function register(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:100|regex:/^[a-zA-Z\s]+$/',
-            'username' => 'required|string|max:50|unique:users,username',
+            'username' => 'required|string|min:4|max:50|unique:users,username',
             'email' => 'required|email|max:100|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ], [
             'nama.required' => 'Nama wajib diisi.',
-            'nama.regex'    => 'Nama hanya boleh berisi huruf dan spasi.',
-            'nama.max'      => 'Nama maksimal 100 karakter.',
+            'nama.regex' => 'Nama hanya boleh berisi huruf dan spasi.',
+            'nama.max' => 'Nama maksimal 100 karakter.',
 
             'username.required' => 'Username wajib diisi.',
-            'username.unique'   => 'Username sudah digunakan.',
+            'username.unique' => 'Username sudah digunakan.',
 
             'email.required' => 'Email wajib diisi.',
-            'email.email'    => 'Format email tidak valid.',
-            'email.unique'   => 'Email sudah terdaftar.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
 
-            'password.required'  => 'Password wajib diisi.',
-            'password.min'       => 'Password minimal 8 karakter.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak sama.',
         ]);
 
-        User::create([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'peminjam',
-        ]);
+        try {
+            $validated['password'] = Hash::make($validated['password']);
+            $validated['role'] = 'peminjam';
 
-        return redirect('/login')->with('success', 'Registrasi berhasil');
+            $user = User::create($validated);
+
+            logAktivitas(
+                'REGISTER',
+                'Autentikasi',
+                "Register user: '{$user->nama}'",
+                $user->id
+            );
+
+            return redirect()->route('login')->with('success', 'Registrasi berhasil. Silakan login.');
+
+        } catch (\Exception $e) {
+
+            return back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat menambahkan user.');
+        }
     }
 }

@@ -11,15 +11,18 @@ class KategoriSeeder extends Seeder
     public function run(): void
     {
         $kategoris = [
-            'Laptop',
-            'Proyektor',
-            'Kamera',
-            'Printer',
-            'Scanner',
-            'Speaker',
-            'Monitor',
-            'Keyboard',
-            'Mouse',
+            'Elektronik',
+            'Kebersihan',
+            'Hiburan',
+            'Pakaian',
+            'Perkakas',
+            'Dekorasi',
+            'Kategori 1',
+            'Kategori 2',
+            'Kategori 3',
+            'Kategori 4',
+            'Kategori 5',
+            'Kategori 6',
         ];
 
         foreach ($kategoris as $nama) {
