@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Pilih Kategori Alat')
+@section('title', 'Pilih Kategori Buku')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Kategori Alat</h3>
-    <p class="mb-0">Pilih kategori alat yang tersedia</p>
+    <h3 class="mb-1">Kategori Buku</h3>
+    <p class="mb-0">Pilih kategori buku yang ingin Anda pinjam</p>
 </div>
 
 <div class="card mb-3">

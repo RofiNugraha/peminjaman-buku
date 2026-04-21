@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Kategori')
+@section('title', 'Tambah Kategori Buku')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Tambah Kategori</h3>
-    <p class="mb-0">Tambahkan kategori baru ke dalam sistem</p>
+    <h3 class="mb-1">Tambah Kategori Buku</h3>
+    <p class="mb-0">Tambahkan kategori buku baru ke dalam sistem</p>
 </div>
 
 @if ($errors->any())
@@ -28,7 +28,7 @@
                 <label class="form-label">Nama Kategori</label>
                 <input type="text" name="nama_kategori"
                     class="form-control @error('nama_kategori') is-invalid @enderror" value="{{ old('nama_kategori') }}"
-                    placeholder="Contoh: Elektronik">
+                    placeholder="Contoh: Novel, Sains, Sejarah">
 
                 @error('nama_kategori')
                 <div class="invalid-feedback">{{ $message }}</div>

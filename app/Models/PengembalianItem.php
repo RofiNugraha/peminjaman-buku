@@ -10,7 +10,7 @@ class PengembalianItem extends Model
 
     protected $fillable = [
         'id_pengembalian',
-        'id_alat',
+        'id_buku',
         'qty_baik',
         'qty_hilang',
         'qty_rusak',
@@ -21,9 +21,9 @@ class PengembalianItem extends Model
         'denda' => 'integer',
     ];
 
-    public function alat()
+    public function buku()
     {
-        return $this->belongsTo(Alat::class, 'id_alat');
+        return $this->belongsTo(Buku::class, 'id_buku');
     }
 
     public function kategoris()

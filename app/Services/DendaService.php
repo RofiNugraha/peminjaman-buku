@@ -42,7 +42,7 @@ class DendaService
             );
         });
 
-        $peminjaman->load(['user','pengembalian.items.alat']);
+        $peminjaman->load(['user','pengembalian.items.buku']);
 
         Mail::to($peminjaman->user->email)
             ->send(new BuktiPelunasanMail($peminjaman));

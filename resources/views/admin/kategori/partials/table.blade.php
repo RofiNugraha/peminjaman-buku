@@ -5,7 +5,7 @@
                 <th width="60">No</th>
                 <th>Nama Kategori</th>
                 <th>Keterangan</th>
-                <th width="120" class="text-center">Jumlah Alat</th>
+                <th width="120" class="text-center">Jumlah Buku</th>
                 <th width="140" class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -26,7 +26,7 @@
 
                 <td class="text-center">
                     <span class="badge bg-primary bg-opacity-10 text-primary">
-                        {{ $kategori->alats_count }}
+                        {{ $kategori->bukus_count }}
                     </span>
                 </td>
 
@@ -52,7 +52,7 @@
             @empty
             <tr>
                 <td colspan="5" class="text-center text-muted py-4">
-                    Data kategori belum tersedia
+                    Data kategori buku belum tersedia
                 </td>
             </tr>
             @endforelse

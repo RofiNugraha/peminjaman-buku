@@ -4,7 +4,7 @@
             <tr>
                 <th width="60">No</th>
                 <th>Kode</th>
-                <th>Nama</th>
+                <th>Siswa</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
                 <th width="140">Status</th>
@@ -62,7 +62,7 @@
             @empty
             <tr>
                 <td colspan="7" class="text-center text-muted py-4">
-                    Tidak ada data peminjaman
+                    Tidak ada data peminjaman buku
                 </td>
             </tr>
             @endforelse

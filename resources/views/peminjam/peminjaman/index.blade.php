@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Peminjaman Saya')
+@section('title', 'Riwayat Pinjam Buku')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Peminjaman Alat Saya</h3>
-    <p class="mb-0">Kelola dan pantau status peminjaman alat</p>
+    <h3 class="mb-1">Riwayat Peminjaman Buku</h3>
+    <p class="mb-0">Pantau status dan riwayat peminjaman buku Anda</p>
 </div>
 
 @if(session('success'))
@@ -19,7 +19,7 @@
 
         <div>
             <label class="form-label small">Cari</label>
-            <input type="text" id="search" class="form-control" placeholder="Nama alat">
+            <input type="text" id="search" class="form-control" placeholder="Judul Buku">
         </div>
 
         <div>
@@ -65,7 +65,7 @@
         </div>
         @else
         <div class="text-center text-muted py-5">
-            Belum ada peminjaman
+            Belum ada riwayat peminjaman buku
         </div>
         @endif
 

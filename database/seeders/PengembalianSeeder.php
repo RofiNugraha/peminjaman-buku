@@ -15,7 +15,7 @@ class PengembalianSeeder extends Seeder
     {
         DB::transaction(function () {
 
-            $peminjamans = Peminjaman::with('items.alat')->get();
+            $peminjamans = Peminjaman::with('items.buku')->get();
 
             foreach ($peminjamans as $peminjaman) {
 
@@ -33,7 +33,7 @@ class PengembalianSeeder extends Seeder
 
                 $dendaTelat = 0;
                 foreach ($peminjaman->items as $item) {
-                    $dendaTelat += $item->alat->denda_per_hari * $hariTelat;
+                    $dendaTelat += $item->buku->denda_per_hari * $hariTelat;
                 }
 
                 $pengembalian = Pengembalian::create([
@@ -65,7 +65,7 @@ class PengembalianSeeder extends Seeder
 
                     PengembalianItem::create([
                         'id_pengembalian' => $pengembalian->id,
-                        'id_alat'         => $item->id_alat,
+                        'id_buku'         => $item->id_buku,
                         'qty_baik'        => $qtyBaik,
                         'qty_rusak'       => $qtyRusak,
                         'qty_hilang'      => $qtyHilang,
@@ -73,7 +73,7 @@ class PengembalianSeeder extends Seeder
                     ]);
 
                     if ($qtyBaik > 0) {
-                        $item->alat->increment('stok', $qtyBaik);
+                        $item->buku->increment('stok', $qtyBaik);
                     }
 
                     $totalDendaBarang += $subtotalDenda;

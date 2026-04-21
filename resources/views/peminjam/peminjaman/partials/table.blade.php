@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th width="60">No</th>
-                <th>Alat</th>
+                <th>Judul Buku</th>
                 <th>Kategori</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
@@ -20,10 +20,10 @@
             <tr>
                 <td class="text-muted">{{ $no++ }}</td>
 
-                <td class="fw-semibold">{{ $item->alat->nama_alat }}</td>
+                <td class="fw-semibold">{{ $item->buku->judul }}</td>
 
                 <td class="text-muted">
-                    {{ $item->alat->kategoris->nama_kategori }}
+                    {{ $item->buku->kategoris->nama_kategori }}
                 </td>
 
                 <td>
@@ -63,7 +63,7 @@
             @empty
             <tr>
                 <td colspan="7" class="text-center text-muted py-4">
-                    Tidak ada data peminjaman
+                    Tidak ada data peminjaman buku
                 </td>
             </tr>
             @endforelse

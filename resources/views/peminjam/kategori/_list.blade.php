@@ -23,7 +23,7 @@
                     </div>
 
                     <a href="{{ route('peminjam.kategori.show', $kategori->id) }}" class="btn btn-primary w-100 btn-sm">
-                        Lihat Alat
+                        Lihat Buku
                     </a>
 
                 </div>

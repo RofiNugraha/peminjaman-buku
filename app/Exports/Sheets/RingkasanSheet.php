@@ -28,7 +28,7 @@ class RingkasanSheet implements FromView, ShouldAutoSize, WithStyles, WithTitle
     {
         $data = app(LaporanPeminjamanService::class)->getData($this->request);
 
-        return view('petugas.laporan.excel.ringkasan', [
+        return view('admin.laporan.excel.ringkasan', [
             'total' => $data->count(),
             'totalDenda' => $data->sum('total_denda'),
             'telat' => $data->filter(fn($d) => $d->is_telat)->count(),

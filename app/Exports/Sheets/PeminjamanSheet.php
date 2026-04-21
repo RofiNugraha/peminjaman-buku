@@ -28,7 +28,7 @@ class PeminjamanSheet implements FromView, ShouldAutoSize, WithStyles, WithTitle
     {
         $data = app(LaporanPeminjamanService::class)->getData($this->request);
 
-        return view('petugas.laporan.excel.peminjaman', compact('data'));
+        return view('admin.laporan.excel.peminjaman', compact('data'));
     }
 
     public function styles(Worksheet $sheet)

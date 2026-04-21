@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Monitoring Peminjaman')
+@section('title', 'Monitoring Pinjam Buku')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Monitoring Peminjaman</h3>
-    <p class="mb-0">Pantau seluruh aktivitas peminjaman pengguna</p>
+    <h3 class="mb-1">Monitoring Peminjaman Buku</h3>
+    <p class="mb-0">Pantau seluruh aktivitas peminjaman buku oleh siswa</p>
 </div>
 
 <ul class="nav nav-tabs mb-3" id="peminjamanTabs">
@@ -24,7 +24,7 @@
 
             <div>
                 <label class="form-label small">Cari</label>
-                <input type="text" id="search" class="form-control" placeholder="Kode / nama pengguna">
+                <input type="text" id="search" class="form-control" placeholder="NISN / Nama Siswa / Kode">
             </div>
 
             <div>

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Kategori')
+@section('title', 'Edit Kategori Buku')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Edit Kategori</h3>
-    <p class="mb-0">Perbarui informasi kategori dengan benar</p>
+    <h3 class="mb-1">Edit Kategori Buku</h3>
+    <p class="mb-0">Perbarui informasi kategori buku dengan benar</p>
 </div>
 
 @if ($errors->any())
@@ -31,7 +31,7 @@
                     <label class="form-label">Nama Kategori</label>
                     <input type="text" name="nama_kategori"
                         class="form-control @error('nama_kategori') is-invalid @enderror"
-                        value="{{ old('nama_kategori', $kategori->nama_kategori) }}" placeholder="Contoh: Elektronik"
+                        value="{{ old('nama_kategori', $kategori->nama_kategori) }}" placeholder="Contoh: Novel, Sains, Sejarah"
                         required>
 
                     <div class="form-text">

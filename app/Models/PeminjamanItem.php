@@ -10,13 +10,13 @@ class PeminjamanItem extends Model
 
     protected $fillable = [
         'id_peminjaman',
-        'id_alat',
+        'id_buku',
         'qty'
     ];
 
-    public function alat()
+    public function buku()
     {
-        return $this->belongsTo(Alat::class, 'id_alat');
+        return $this->belongsTo(Buku::class, 'id_buku');
     }
 
     public function peminjaman()

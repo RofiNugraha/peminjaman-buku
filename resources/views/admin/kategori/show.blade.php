@@ -3,8 +3,8 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="mb-1">Detail Kategori</h3>
-        <p class="text-muted mb-0">Informasi lengkap kategori</p>
+        <h3 class="mb-1">Detail Kategori Buku</h3>
+        <p class="text-muted mb-0">Informasi lengkap kategori buku</p>
     </div>
 
     <a href="{{ route('kategori.index') }}" class="btn btn-secondary">
@@ -23,8 +23,8 @@
             </div>
 
             <div class="col-md-6">
-                <label class="form-label small text-muted">Jumlah Alat</label>
-                <div>{{ $kategori->alats_count }}</div>
+                <label class="form-label small text-muted">Jumlah Buku</label>
+                <div>{{ $kategori->bukus_count }}</div>
             </div>
 
             <div class="col-12">

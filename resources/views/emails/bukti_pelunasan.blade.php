@@ -192,7 +192,7 @@
         <div class="header">
             <div>
                 <div class="title">BUKTI PELUNASAN DENDA</div>
-                <div class="subtitle">Sistem Peminjaman Alat</div>
+                <div class="subtitle">Perpustakaan Digital</div>
             </div>
 
             <div style="text-align:right;">
@@ -218,7 +218,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nama Alat</th>
+                        <th>Judul Buku</th>
                         <th class="text-right">Baik</th>
                         <th class="text-right">Rusak</th>
                         <th class="text-right">Hilang</th>
@@ -229,7 +229,7 @@
                     @if($peminjaman->pengembalian && $peminjaman->pengembalian->items)
                     @foreach($peminjaman->pengembalian->items as $item)
                     <tr>
-                        <td>{{ $item->alat->nama_alat ?? '-' }}</td>
+                        <td>{{ $item->buku->judul ?? '-' }}</td>
                         <td class="text-right">{{ $item->qty_baik }}</td>
                         <td class="text-right">{{ $item->qty_rusak }}</td>
                         <td class="text-right">{{ $item->qty_hilang }}</td>

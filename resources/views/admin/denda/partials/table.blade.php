@@ -4,8 +4,8 @@
             <tr>
                 <th width="60">No</th>
                 <th>Kode</th>
-                <th>Peminjam</th>
-                <th>Alat</th>
+                <th>Siswa</th>
+                <th>Buku</th>
                 <th width="150">Total Denda</th>
                 <th width="140">Status</th>
                 <th width="120" class="text-center">Aksi</th>
@@ -24,7 +24,7 @@
 
                 <td class="small text-muted">
                     @foreach ($p->items as $item)
-                    <div>{{ $item->alat->nama_alat }} ({{ $item->qty }})</div>
+                    <div>{{ $item->buku->judul }} ({{ $item->qty }})</div>
                     @endforeach
                 </td>
 
@@ -60,7 +60,7 @@
             @if($peminjamans->isEmpty())
             <tr>
                 <td colspan="7" class="text-center text-muted py-4">
-                    Tidak ada data denda
+                    Tidak ada data denda buku
                 </td>
             </tr>
             @endif

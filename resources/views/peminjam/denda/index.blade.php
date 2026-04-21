@@ -21,7 +21,7 @@
 
         <div>
             <label class="form-label small">Cari</label>
-            <input type="text" id="search" class="form-control" placeholder="Kode / nama alat">
+            <input type="text" id="search" class="form-control" placeholder="Kode / Judul Buku">
         </div>
 
         <div>

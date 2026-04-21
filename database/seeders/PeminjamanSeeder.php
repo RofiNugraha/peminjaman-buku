@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Peminjaman;
 use App\Models\PeminjamanItem;
 use App\Models\User;
-use App\Models\Alat;
+use App\Models\Buku;
 use Illuminate\Support\Facades\DB;
 
 class PeminjamanSeeder extends Seeder
@@ -24,9 +24,9 @@ class PeminjamanSeeder extends Seeder
                     ->inRandomOrder()
                     ->first();
 
-                $alat = Alat::where('stok', '>', 0)->inRandomOrder()->first();
+                $buku = Buku::where('stok', '>', 0)->inRandomOrder()->first();
 
-                if (!$user || !$alat) return;
+                if (!$user || !$buku) return;
 
                 $rand = rand(1, 100);
 
@@ -40,7 +40,7 @@ class PeminjamanSeeder extends Seeder
                 $tglPinjam  = now()->subDays(rand(0, 5));
                 $tglKembali = now()->copy()->addDays(rand(1, 7));
 
-                $qty = rand(1, min(2, $alat->stok));
+                $qty = rand(1, min(2, $buku->stok));
                 $petugas = $petugasList->random();
 
                 $peminjaman = Peminjaman::create([
@@ -61,16 +61,16 @@ class PeminjamanSeeder extends Seeder
 
                 PeminjamanItem::create([
                     'id_peminjaman' => $peminjaman->id,
-                    'id_alat'       => $alat->id,
+                    'id_buku'       => $buku->id,
                     'qty'           => $qty,
                 ]);
 
                 if (in_array($status, ['disetujui', 'dikembalikan'])) {
-                    $alat->decrement('stok', $qty);
+                    $buku->decrement('stok', $qty);
                 }
 
                 if ($status === 'dikembalikan') {
-                    $alat->increment('stok', $qty);
+                    $buku->increment('stok', $qty);
                 }
 
                 if ($status === 'dikembalikan' && rand(1, 100) <= 30) {
@@ -95,9 +95,9 @@ class PeminjamanSeeder extends Seeder
                     ->inRandomOrder()
                     ->first();
 
-                $alat = Alat::where('stok', '>', 0)->inRandomOrder()->first();
+                $buku = Buku::where('stok', '>', 0)->inRandomOrder()->first();
 
-                if (!$user || !$alat) return;
+                if (!$user || !$buku) return;
 
                 $qty = 1;
                 $petugas = $petugasList->random();
@@ -120,11 +120,11 @@ class PeminjamanSeeder extends Seeder
 
                 PeminjamanItem::create([
                     'id_peminjaman' => $peminjaman->id,
-                    'id_alat'       => $alat->id,
+                    'id_buku'       => $buku->id,
                     'qty'           => $qty,
                 ]);
 
-                $alat->decrement('stok', $qty);
+                $buku->decrement('stok', $qty);
             });
         }
 

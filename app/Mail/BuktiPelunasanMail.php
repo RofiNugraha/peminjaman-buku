@@ -23,7 +23,7 @@ class BuktiPelunasanMail extends Mailable
     {
         $this->peminjaman = \App\Models\Peminjaman::with([
             'user',
-            'pengembalian.items.alat'
+            'pengembalian.items.buku'
         ])->find($this->peminjaman->id);
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('emails.bukti_pelunasan', [

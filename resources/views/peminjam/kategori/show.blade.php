@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Alat')
+@section('title', 'Daftar Buku')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <div>
-        <h3 class="mb-1">Daftar Alat</h3>
+        <h3 class="mb-1">Daftar Buku</h3>
         <p class="mb-0 text-muted">{{ $kategori->nama_kategori }}</p>
     </div>
 
@@ -18,8 +18,8 @@
     <div class="card-body d-flex flex-wrap gap-3 align-items-end">
 
         <div>
-            <label class="form-label small">Cari Alat</label>
-            <input type="text" id="search" class="form-control" placeholder="Nama alat..."
+            <label class="form-label small">Cari Buku</label>
+            <input type="text" id="search" class="form-control" placeholder="Cari buku..."
                 value="{{ request('search') }}">
         </div>
 
@@ -35,15 +35,15 @@
     </div>
 </div>
 
-@if($alats->isEmpty())
+@if($bukus->isEmpty())
 <div class="text-center text-muted py-5">
-    Tidak ada alat pada kategori ini
+    Tidak ada buku pada kategori ini
 </div>
 @else
 <div class="card">
     <div class="card-body">
-        <div id="alat-container">
-            @include('peminjam.kategori._alat_list')
+        <div id="buku-container">
+            @include('peminjam.kategori._buku_list')
         </div>
     </div>
 </div>
@@ -52,7 +52,7 @@
 <script>
 let debounce;
 
-function fetchAlat(url = null) {
+function fetchBuku(url = null) {
     const search = document.getElementById('search').value;
     const perPage = document.getElementById('perPage').value;
 
@@ -80,7 +80,7 @@ function fetchAlat(url = null) {
         })
         .then(res => res.text())
         .then(html => {
-            const container = document.getElementById('alat-container');
+            const container = document.getElementById('buku-container');
             container.style.opacity = 0.5;
 
             setTimeout(() => {
@@ -92,18 +92,18 @@ function fetchAlat(url = null) {
 
 document.getElementById('search').addEventListener('input', () => {
     clearTimeout(debounce);
-    debounce = setTimeout(fetchAlat, 300);
+    debounce = setTimeout(fetchBuku, 300);
 });
 
 document.getElementById('perPage').addEventListener('change', () => {
-    fetchAlat();
+    fetchBuku();
 });
 
 document.addEventListener('click', function(e) {
     const link = e.target.closest('.pagination a');
     if (link) {
         e.preventDefault();
-        fetchAlat(link.href);
+        fetchBuku(link.href);
     }
 });
 </script>

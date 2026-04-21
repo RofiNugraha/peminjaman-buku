@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Monitoring Denda')
+@section('title', 'Monitoring Denda Buku')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Monitoring Denda</h3>
-    <p class="mb-0">Kelola dan pantau pembayaran denda peminjaman</p>
+    <h3 class="mb-1">Monitoring Denda Buku</h3>
+    <p class="mb-0">Kelola dan pantau pembayaran denda peminjaman buku</p>
 </div>
 
 <div class="card mb-3">
@@ -15,7 +15,7 @@
 
             <div>
                 <label class="form-label small">Cari</label>
-                <input type="text" id="search" class="form-control" placeholder="Nama / alat / kode">
+                <input type="text" id="search" class="form-control" placeholder="NISN / Nama / Judul Buku / Kode">
             </div>
 
             <div>

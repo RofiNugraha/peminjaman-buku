@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alat;
+use App\Models\Buku;
 use App\Models\LogAktivitas;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
@@ -17,20 +17,14 @@ class DashboardController extends Controller
     {
         $role = Auth::user()->role;
 
-        if ($role === 'admin') {
+        if ($role === 'admin' || $role === 'petugas') {
             return view('dashboard.index', [
                 'totalUser' => User::count(),
-                'totalAlat' => Alat::count(),
+                'totalBuku' => Buku::count(),
                 'peminjamanAktif' => Peminjaman::where('status', 'disetujui')->count(),
-                'totalLog' => LogAktivitas::count(),
-            ]);
-        }
-
-        if ($role === 'petugas') {
-            return view('dashboard.index', [
-                'menunggu' => Peminjaman::where('status', 'menunggu')->count(),
-                'disetujui' => Peminjaman::where('status', 'disetujui')->count(),
+                'menungguApproval' => Peminjaman::where('status', 'menunggu')->count(),
                 'pengembalianHariIni' => Pengembalian::whereDate('tgl_dikembalikan', now())->count(),
+                'totalLog' => LogAktivitas::count(),
             ]);
         }
 
@@ -38,6 +32,7 @@ class DashboardController extends Controller
             'totalPinjam' => Peminjaman::where('id_user', Auth::id())->count(),
             'aktif' => Peminjaman::where('id_user', Auth::id())->where('status', 'disetujui')->count(),
             'selesai' => Peminjaman::where('id_user', Auth::id())->where('status', 'dikembalikan')->count(),
+            'totalDenda' => Peminjaman::where('id_user', Auth::id())->sum('total_denda'),
         ]);
     }
 }

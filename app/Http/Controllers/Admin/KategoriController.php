@@ -24,7 +24,7 @@ class KategoriController extends Controller
         }
 
         $kategoris = Kategori::query()
-            ->withCount('alats')
+            ->withCount('bukus')
             ->when($search, function ($q) use ($search) {
                 $q->where(function ($query) use ($search) {
                     $query->where('nama_kategori','like',"%{$search}%")
@@ -75,7 +75,7 @@ class KategoriController extends Controller
 
     public function show(Kategori $kategori)
     {
-        $kategori->loadCount('alats');
+        $kategori->loadCount('bukus');
 
         return view('admin.kategori.show', compact('kategori'));
     }
@@ -112,8 +112,8 @@ class KategoriController extends Controller
 
     public function destroy(Kategori $kategori)
     {
-        if ($kategori->alats()->count() > 0) {
-            return back()->with('error','Kategori tidak dapat dihapus karena masih memiliki alat.');
+        if ($kategori->bukus()->count() > 0) {
+            return back()->with('error','Kategori tidak dapat dihapus karena masih memiliki buku.');
         }
 
         $nama = $kategori->nama_kategori;

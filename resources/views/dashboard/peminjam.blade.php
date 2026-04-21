@@ -1,6 +1,6 @@
 <div class="page-header mb-4">
-    <h3>Dashboard Peminjam</h3>
-    <p>Aktivitas peminjaman Anda</p>
+    <h3>Dashboard Siswa</h3>
+    <p>Aktivitas peminjaman buku Anda</p>
 </div>
 
 <div class="row g-4">
@@ -34,5 +34,13 @@
             </div>
         </div>
     </div>
-
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card d-flex">
+            <div class="card-indicator indicator-danger"></div>
+            <div class="card-body">
+                <h6>Total Denda</h6>
+                <h3>Rp {{ number_format($totalDenda ?? 0, 0, ',', '.') }}</h3>
+            </div>
+        </div>
+    </div>
 </div>

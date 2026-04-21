@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
+use App\Models\Buku;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -35,7 +37,7 @@ class PeminjamanController extends Controller
 
         $query = Peminjaman::with([
             'user.profilSiswa.dataSiswa',
-            'items.alat.kategoris'
+            'items.buku.kategoris'
         ])->whereIn('status', $statusFilter);
 
         if ($search) {
@@ -79,10 +81,86 @@ class PeminjamanController extends Controller
     {
         $peminjaman = Peminjaman::with([
             'user.profilSiswa.dataSiswa',
-            'items.alat.kategoris',
-            'pengembalian.items.alat'
+            'items.buku.kategoris',
+            'pengembalian.items.buku'
         ])->findOrFail($id);
 
         return view('admin.peminjaman.show', compact('peminjaman'));
+    }
+
+    public function approve(Peminjaman $peminjaman)
+    {
+        DB::transaction(function () use ($peminjaman) {
+
+            $peminjaman = Peminjaman::where('id', $peminjaman->id)
+                ->lockForUpdate()
+                ->first();
+
+            if (!$peminjaman->canBeApproved()) {
+                abort(409, 'Pengajuan sudah diproses.');
+            }
+
+            if ($peminjaman->isExpired()) {
+                abort(422, 'Peminjaman sudah kadaluarsa.');
+            }
+
+            $items = $peminjaman->items()
+                ->with('buku')
+                ->lockForUpdate()
+                ->get();
+
+            foreach ($items as $item) {
+                if ($item->buku->stok < $item->qty) {
+                    throw new \Exception("Stok buku '{$item->buku->judul}' tidak cukup");
+                }
+            }
+
+            foreach ($items as $item) {
+                Buku::where('id', $item->id_buku)
+                    ->where('stok', '>=', $item->qty)
+                    ->decrement('stok', $item->qty);
+            }
+
+            $peminjaman->update([
+                'status'        => 'disetujui',
+                'approved_by'   => Auth::id(),
+                'approved_at'   => now(),
+            ]);
+
+            logAktivitas(
+                'Mengubah',
+                'Peminjaman',
+                "Menyetujui pengajuan peminjaman buku (Kode {$peminjaman->kode_peminjaman})"
+            );
+        });
+
+        return redirect()->route('admin.peminjaman.index')
+            ->with('success','Pengajuan berhasil disetujui.');
+    }
+
+    public function reject(Peminjaman $peminjaman)
+    {
+        if (!$peminjaman->canBeApproved()) {
+            return back()->with('error', 'Pengajuan tidak dapat ditolak.');
+        }
+
+        if ($peminjaman->isExpired()) {
+            return back()->with('error', 'Peminjaman sudah kadaluarsa.');
+        }
+
+        $peminjaman->update([
+            'status'        => 'ditolak',
+            'rejected_by'   => Auth::id(),
+            'rejected_at'   => now(),
+        ]);
+
+        logAktivitas(
+            'Mengubah',
+            'Peminjaman',
+            "Menolak pengajuan peminjaman buku (Kode {$peminjaman->kode_peminjaman})"
+        );
+
+        return redirect()->route('admin.peminjaman.index')
+            ->with('success','Pengajuan berhasil ditolak.');
     }
 }

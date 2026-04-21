@@ -5,8 +5,8 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="mb-1">Detail Peminjaman</h3>
-        <p class="text-muted mb-0">Informasi lengkap peminjaman</p>
+        <h3 class="mb-1">Detail Peminjaman Buku</h3>
+        <p class="text-muted mb-0">Informasi lengkap peminjaman buku</p>
     </div>
 
     <a href="{{ route('peminjam.peminjaman.index') }}" class="btn btn-secondary">
@@ -42,7 +42,7 @@ $colors = [
                 <h5 class="fw-semibold mb-1">{{ $user->nama }}</h5>
 
                 <span class="badge bg-warning bg-opacity-10 text-warning mb-2">
-                    Peminjam
+                    Siswa / Anggota
                 </span>
 
                 <p class="text-muted small mb-0">{{ $user->email }}</p>
@@ -91,18 +91,18 @@ $colors = [
         </div>
     </div>
 
-    <!-- DATA ALAT -->
+    <!-- DATA BUKU -->
     <div class="col-12">
         <div class="card">
             <div class="card-body">
 
-                <h6 class="fw-semibold mb-3">Daftar Alat Dipinjam</h6>
+                <h6 class="fw-semibold mb-3">Daftar Buku Dipinjam</h6>
 
                 <div class="table-responsive">
                     <table class="table table-modern align-middle">
                         <thead>
                             <tr>
-                                <th>Nama Alat</th>
+                                <th>Judul Buku</th>
                                 <th>Kategori</th>
                                 <th width="120">Jumlah</th>
                             </tr>
@@ -110,9 +110,9 @@ $colors = [
                         <tbody>
                             @foreach($peminjaman->items as $item)
                             <tr>
-                                <td class="fw-medium">{{ $item->alat->nama_alat }}</td>
+                                <td class="fw-medium">{{ $item->buku->judul }}</td>
                                 <td class="text-muted">
-                                    {{ $item->alat->kategoris->nama_kategori ?? '-' }}
+                                    {{ $item->buku->kategoris->nama_kategori ?? '-' }}
                                 </td>
                                 <td>{{ $item->qty }}</td>
                             </tr>
@@ -158,9 +158,9 @@ $colors = [
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Nama Alat</th>
-                                <th class="text-center">Baik</th>
-                                <th class="text-center">Rusak</th>
+                                <th>Judul Buku</th>
+                                <th class="text-center">Kondisi Baik</th>
+                                <th class="text-center">Kondisi Rusak</th>
                                 <th class="text-center">Hilang</th>
                                 <th width="150">Denda</th>
                             </tr>
@@ -169,7 +169,7 @@ $colors = [
                             @foreach($peminjaman->pengembalian->items as $item)
                             <tr>
                                 <td class="fw-medium">
-                                    {{ $item->alat->nama_alat ?? '-' }}
+                                    {{ $item->buku->judul ?? '-' }}
                                     <div class="small text-muted">
                                         Total: {{ $item->qty_baik + $item->qty_rusak + $item->qty_hilang }}
                                     </div>

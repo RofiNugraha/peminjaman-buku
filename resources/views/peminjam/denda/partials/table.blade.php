@@ -4,7 +4,7 @@
             <tr>
                 <th width="60">No</th>
                 <th>Kode</th>
-                <th>Alat</th>
+                <th>Buku</th>
                 <th width="160">Total Denda</th>
                 <th width="140">Status</th>
                 <th width="100" class="text-center">Aksi</th>
@@ -36,7 +36,7 @@
                     <div class="fw">
                         @foreach ($p->items as $item)
                         <div>
-                            {{ $item->alat->nama_alat }}
+                            {{ $item->buku->judul }}
                         </div>
                         @endforeach
                     </div>

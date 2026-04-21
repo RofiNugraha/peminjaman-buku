@@ -22,8 +22,8 @@ class DendaController extends Controller
 
         $peminjamans = Peminjaman::with([
                 'user',
-                'items.alat',
-                'pengembalian.items.alat'
+                'items.buku',
+                'pengembalian.items.buku'
             ])
             ->where('id_user', Auth::id())
             ->where('total_denda', '>', 0)
@@ -31,8 +31,8 @@ class DendaController extends Controller
                 $q->where('status_denda', $status)
             )
             ->when($search, function ($q) use ($search) {
-                $q->whereHas('items.alat', fn ($a) =>
-                    $a->where('nama_alat', 'like', "%{$search}%")
+                $q->whereHas('items.buku', fn ($a) =>
+                    $a->where('judul', 'like', "%{$search}%")
                 )->orWhere('kode_peminjaman', 'like', "%{$search}%");
             })
             ->orderByRaw("CASE WHEN status_denda = 'belum' THEN 0 ELSE 1 END")
@@ -55,8 +55,8 @@ class DendaController extends Controller
 
         $peminjaman->load([
             'user.profilSiswa.dataSiswa',
-            'items.alat.kategoris',
-            'pengembalian.items.alat'
+            'items.buku.kategoris',
+            'pengembalian.items.buku'
         ]);
 
         return view('peminjam.denda.show', compact('peminjaman'));

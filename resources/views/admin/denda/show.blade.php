@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Denda')
+@section('title', 'Detail Denda Buku')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="mb-1">Detail Denda</h3>
-        <p class="text-muted mb-0">Informasi lengkap peminjaman dan denda</p>
+        <h3 class="mb-1">Detail Denda Buku</h3>
+        <p class="text-muted mb-0">Informasi lengkap denda peminjaman buku</p>
     </div>
 
     <a href="{{ route('admin.denda.index') }}" class="btn btn-secondary">
@@ -19,136 +19,99 @@ $user = $peminjaman->user;
 $profil = $user->profilSiswa ?? null;
 $dataSiswa = $profil->dataSiswa ?? null;
 
-$colors = [
-'belum' => 'danger',
-'lunas' => 'success',
-'tidak_ada' => 'secondary'
+$statusColor = [
+    'belum' => 'danger',
+    'lunas' => 'success',
+    'tidak_ada' => 'secondary'
 ];
 @endphp
 
-<div class="row g-4">
+<div class="row g-4 mb-5">
 
+    <!-- PROFIL -->
     <div class="col-lg-4">
         <div class="card text-center">
             <div class="card-body">
-
                 <img src="{{ $profil && $profil->foto ? asset('storage/'.$profil->foto) : asset('storage/profil/default.png') }}"
-                    class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;">
+                    class="rounded-circle mb-3" width="110" height="110" style="object-fit:cover;">
 
                 <h5 class="fw-semibold mb-1">{{ $user->nama }}</h5>
-
                 <span class="badge bg-warning bg-opacity-10 text-warning mb-2">
-                    Peminjam
+                    Siswa / Anggota
                 </span>
-
                 <p class="text-muted small mb-0">{{ $user->email }}</p>
-
             </div>
         </div>
     </div>
 
+    <!-- INFORMASI DENDA -->
     <div class="col-lg-8">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
-
-                <h6 class="fw-semibold mb-3">Informasi Peminjaman</h6>
-
+                <h6 class="fw-semibold mb-3">Informasi Denda</h6>
                 <div class="row gy-3">
-
                     <div class="col-md-6">
-                        <label class="form-label small text-muted">Kode</label>
-                        <div>{{ $peminjaman->kode_peminjaman }}</div>
+                        <label class="form-label small text-muted">Kode Peminjaman</label>
+                        <div class="fw-medium">{{ $peminjaman->kode_peminjaman }}</div>
                     </div>
-
                     <div class="col-md-6">
-                        <label class="form-label small text-muted">Status</label>
+                        <label class="form-label small text-muted">Status Denda</label>
                         <div>
-                            <span class="badge bg-info bg-opacity-10 text-info">
-                                {{ ucfirst($peminjaman->status) }}
+                            <span class="badge bg-{{ $statusColor[$peminjaman->status_denda] }} bg-opacity-10 text-{{ $statusColor[$peminjaman->status_denda] }}">
+                                {{ ucfirst($peminjaman->status_denda) }}
                             </span>
                         </div>
                     </div>
-
                     <div class="col-md-6">
-                        <label class="form-label small text-muted">Tanggal Pinjam</label>
-                        <div>{{ $peminjaman->tgl_pinjam->format('d M Y') }}</div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label small text-muted">Tanggal Kembali</label>
-                        <div>{{ $peminjaman->tgl_kembali->format('d M Y') }}</div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <h6 class="fw-semibold mb-3">Alat Dipinjam</h6>
-
-                <div class="table-responsive">
-                    <table class="table table-modern align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th>Kategori</th>
-                                <th>Nama Alat</th>
-                                <th width="120">Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($peminjaman->items as $item)
-                            <tr>
-                                <td>{{ $item->alat->kategoris->nama_kategori ?? '-' }}</td>
-                                <td class="fw-semibold">{{ $item->alat->nama_alat }}</td>
-                                <td>{{ $item->qty }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <h6 class="fw-semibold mb-3">Data Pengembalian</h6>
-
-                @if($peminjaman->pengembalian)
-
-                <div class="row gy-3 mb-3">
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Tanggal Dikembalikan</label>
-                        <div>{{ \Carbon\Carbon::parse($peminjaman->pengembalian->tgl_dikembalikan)->format('d M Y') }}
+                        <label class="form-label small text-muted">Total Denda</label>
+                        <div class="fw-semibold text-danger">
+                            Rp {{ number_format($peminjaman->total_denda,0,',','.') }}
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Hari Telat</label>
-                        <div>{{ $peminjaman->pengembalian->hari_telat }} hari</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Denda Telat</label>
-                        <div>Rp {{ number_format($peminjaman->pengembalian->denda_telat, 0, ',', '.') }}</div>
-                    </div>
-
                 </div>
 
+                <div class="mt-4 d-flex flex-wrap gap-2">
+                    @if($peminjaman->status_denda !== 'lunas')
+                        <form action="{{ route('admin.denda.ingatkan', $peminjaman->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-secondary btn-sm confirm-action" data-title="Kirim Pengingat?">
+                                Kirim Pengingat
+                            </button>
+                        </form>
+
+                        <form action="{{ route('admin.denda.lunas', $peminjaman->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-sm confirm-action" data-title="Tandai Lunas?">
+                                Tandai Lunas
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('admin.denda.download', $peminjaman->id) }}" class="btn btn-success btn-sm">
+                            Download Bukti
+                        </a>
+
+                        <form action="{{ route('admin.denda.kirimUlang', $peminjaman->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-sm confirm-action" data-title="Kirim Ulang Bukti?">
+                                Kirim Ulang Bukti
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA PENGEMBALIAN -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="fw-semibold mb-3">Daftar Buku Terkait</h6>
                 <div class="table-responsive">
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Nama Alat</th>
+                                <th>Judul Buku</th>
                                 <th class="text-center">Baik</th>
                                 <th class="text-center">Rusak</th>
                                 <th class="text-center">Hilang</th>
@@ -156,154 +119,53 @@ $colors = [
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($peminjaman->pengembalian->items as $item)
-                            <tr>
-                                <td class="fw-medium">
-                                    {{ $item->alat->nama_alat ?? '-' }}
-                                </td>
-
-                                <!-- BAIK -->
-                                <td class="text-center">
-                                    @if($item->qty_baik > 0)
-                                    <span class="badge bg-success bg-opacity-10 text-success">
-                                        {{ $item->qty_baik }}
-                                    </span>
-                                    @else
-                                    <span class="text-muted">0</span>
-                                    @endif
-                                </td>
-
-                                <!-- RUSAK -->
-                                <td class="text-center">
-                                    @if($item->qty_rusak > 0)
-                                    <span class="badge bg-warning bg-opacity-10 text-warning">
-                                        {{ $item->qty_rusak }}
-                                    </span>
-                                    @else
-                                    <span class="text-muted">0</span>
-                                    @endif
-                                </td>
-
-                                <!-- HILANG -->
-                                <td class="text-center">
-                                    @if($item->qty_hilang > 0)
-                                    <span class="badge bg-danger bg-opacity-10 text-danger">
-                                        {{ $item->qty_hilang }}
-                                    </span>
-                                    @else
-                                    <span class="text-muted">0</span>
-                                    @endif
-                                </td>
-
-                                <!-- DENDA -->
-                                <td>
-                                    Rp {{ number_format($item->denda,0,',','.') }}
-                                </td>
-                            </tr>
-                            @endforeach
+                            @if($peminjaman->pengembalian)
+                                @foreach($peminjaman->pengembalian->items as $item)
+                                <tr>
+                                    <td class="fw-medium">{{ $item->buku->judul ?? '-' }}</td>
+                                    <td class="text-center">{{ $item->qty_baik }}</td>
+                                    <td class="text-center">{{ $item->qty_rusak }}</td>
+                                    <td class="text-center">{{ $item->qty_hilang }}</td>
+                                    <td>Rp {{ number_format($item->denda,0,',','.') }}</td>
+                                </tr>
+                                @endforeach
+                            @else
+                                @foreach($peminjaman->items as $item)
+                                <tr>
+                                    <td class="fw-medium">{{ $item->buku->judul }}</td>
+                                    <td colspan="3" class="text-center text-muted">Belum dikembalikan</td>
+                                    <td>-</td>
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
-
-                <div class="mt-3">
-                    <h5 class="mb-1">
-                        Total Denda:
-                        <span class="text-danger">
-                            Rp {{ number_format($peminjaman->total_denda, 0, ',', '.') }}
-                        </span>
-                    </h5>
-
-                    <span
-                        class="badge bg-{{ $colors[$peminjaman->status_denda] }} bg-opacity-10 text-{{ $colors[$peminjaman->status_denda] }}">
-                        {{ ucfirst($peminjaman->status_denda) }}
-                    </span>
-                </div>
-
-                @else
-                <div class="text-center text-muted py-4">
-                    Belum ada data pengembalian
-                </div>
-                @endif
-
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <h6 class="fw-semibold mb-3">Data Siswa</h6>
-
-                <div class="row gy-3">
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">NISN</label>
-                        <div>{{ $dataSiswa->nisn ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Nama</label>
-                        <div>{{ $dataSiswa->nama ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Kelas</label>
-                        <div>{{ $dataSiswa->kelas ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Jurusan</label>
-                        <div>{{ $dataSiswa->jurusan ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Angkatan</label>
-                        <div>{{ $dataSiswa->tahun_angkatan ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Tahun Ajaran</label>
-                        <div>{{ $dataSiswa->tahun_ajaran ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Status</label>
-                        <div>
-                            <span class="badge bg-info bg-opacity-10 text-info">
-                                {{ $dataSiswa->status ?? '-' }}
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr class="my-4">
-
-                <h6 class="fw-semibold mb-3">Kontak</h6>
-
-                <div class="row gy-3">
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">No HP</label>
-                        <div>{{ $profil->no_hp ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">No HP Orang Tua</label>
-                        <div>{{ $profil->no_hp_ortu ?? '-' }}</div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label small text-muted">Alamat</label>
-                        <div>{{ $profil->alamat ?? '-' }}</div>
-                    </div>
-
-                </div>
-
             </div>
         </div>
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+$('.confirm-action').click(function(e) {
+    e.preventDefault();
+    const form = $(this).closest('form');
+    const title = $(this).data('title');
+
+    Swal.fire({
+        title: title,
+        text: "Tindakan ini akan memproses data denda",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Lanjutkan'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+});
+</script>
+@endpush
 @endsection

@@ -9,7 +9,7 @@
             <div class="auth-overlay">
                 <h5 class="brand-title">Sistem Peminjaman</h5>
                 <p class="brand-subtitle">
-                    Kelola peminjaman alat elektronik dengan mudah dan teratur.
+                    Buat akun untuk mulai menggunakan sistem perpustakaan digital sekolah.
                 </p>
             </div>
         </div>

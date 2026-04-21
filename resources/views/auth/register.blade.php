@@ -11,7 +11,7 @@
             <div class="auth-overlay">
                 <h5 class="brand-title">Sistem Peminjaman</h5>
                 <p class="brand-subtitle">
-                    Buat akun untuk mulai menggunakan sistem peminjaman alat elektronik.
+                    Buat akun untuk mulai menggunakan sistem perpustakaan digital sekolah.
                 </p>
             </div>
         </div>

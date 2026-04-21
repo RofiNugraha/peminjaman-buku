@@ -13,12 +13,12 @@ class LaporanPeminjamanService
         $endDate      = $request->end_date;
         $status       = $request->status;
         $statusDenda  = $request->status_denda;
-        $alatId       = $request->alat_id;
+        $bukuId       = $request->buku_id;
 
         $query = Peminjaman::with([
             'user',
-            'items.alat',
-            'pengembalian.items.alat'
+            'items.buku',
+            'pengembalian.items.buku'
         ]);
 
         $query->when($startDate, function ($q) use ($dateType, $startDate) {
@@ -44,9 +44,9 @@ class LaporanPeminjamanService
         $query->when($status, fn($q) => $q->where('status', $status));
         $query->when($statusDenda, fn($q) => $q->where('status_denda', $statusDenda));
 
-        $query->when($alatId, function ($q) use ($alatId) {
-            $q->whereHas('items', function ($sub) use ($alatId) {
-                $sub->where('id_alat', $alatId);
+        $query->when($bukuId, function ($q) use ($bukuId) {
+            $q->whereHas('items', function ($sub) use ($bukuId) {
+                $sub->where('id_buku', $bukuId);
             });
         });
 
@@ -60,11 +60,11 @@ class LaporanPeminjamanService
         $endDate      = $request->end_date;
         $status       = $request->status;
         $statusDenda  = $request->status_denda;
-        $alatId       = $request->alat_id;
+        $bukuId       = $request->buku_id;
 
         $query = Peminjaman::with([
             'user',
-            'items.alat',
+            'items.buku',
             'pengembalian'
         ]);
 
@@ -81,9 +81,9 @@ class LaporanPeminjamanService
         $query->when($status, fn($q) => $q->where('status', $status));
         $query->when($statusDenda, fn($q) => $q->where('status_denda', $statusDenda));
 
-        $query->when($alatId, function ($q) use ($alatId) {
-            $q->whereHas('items', function ($sub) use ($alatId) {
-                $sub->where('id_alat', $alatId);
+        $query->when($bukuId, function ($q) use ($bukuId) {
+            $q->whereHas('items', function ($sub) use ($bukuId) {
+                $sub->where('id_buku', $bukuId);
             });
         });
 

@@ -93,7 +93,7 @@ $colors = [
         <div class="card">
             <div class="card-body">
 
-                <h6 class="fw-semibold mb-3">Daftar Alat</h6>
+                <h6 class="fw-semibold mb-3">Daftar Buku</h6>
 
                 <div class="table-responsive">
                     <table class="table table-modern align-middle">
@@ -107,8 +107,8 @@ $colors = [
                         <tbody>
                             @foreach($peminjaman->items as $item)
                             <tr>
-                                <td class="fw-medium">{{ $item->alat->nama_alat }}</td>
-                                <td class="text-muted">{{ $item->alat->kategoris->nama_kategori ?? '-' }}</td>
+                                <td class="fw-medium">{{ $item->buku->judul }}</td>
+                                <td class="text-muted">{{ $item->buku->kategoris->nama_kategori ?? '-' }}</td>
                                 <td>{{ $item->qty }}</td>
                             </tr>
                             @endforeach
@@ -153,7 +153,7 @@ $colors = [
                     <table class="table table-modern align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Nama Alat</th>
+                                <th>Judul Buku</th>
                                 <th class="text-center">Baik</th>
                                 <th class="text-center">Rusak</th>
                                 <th class="text-center">Hilang</th>
@@ -164,7 +164,7 @@ $colors = [
                             @foreach($peminjaman->pengembalian->items as $item)
                             <tr>
                                 <td class="fw-medium">
-                                    {{ $item->alat->nama_alat ?? '-' }}
+                                    {{ $item->buku->judul ?? '-' }}
                                     <div class="small text-muted">
                                         Total: {{ $item->qty_baik + $item->qty_rusak + $item->qty_hilang }}
                                     </div>

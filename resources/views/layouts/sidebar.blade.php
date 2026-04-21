@@ -18,7 +18,11 @@
         $isMasterOpen = request()->is('admin/users*') ||
         request()->is('admin/data_siswa*') ||
         request()->is('admin/kategori*') ||
-        request()->is('admin/alat*');
+        request()->is('admin/buku*') ||
+        request()->is('admin/peminjaman*') ||
+        request()->is('admin/pengembalian*') ||
+        request()->is('admin/denda*') ||
+        request()->is('admin/laporan*');
         @endphp
 
         <li class="nav-item">
@@ -28,7 +32,7 @@
 
                 <span>
                     <i class="bi bi-folder2-open"></i>
-                    <span class="menu-text ms-2">Master</span>
+                    <span class="menu-text ms-2">Master Data</span>
                 </span>
 
                 <i class="bi bi-chevron-down small"></i>
@@ -57,60 +61,54 @@
                         <a href="{{ url('/admin/kategori') }}"
                             class="nav-link text-white {{ request()->is('admin/kategori*') ? 'active' : '' }}">
                             <i class="bi bi-folder"></i>
-                            <span class="menu-text ms-2">Kategori</span>
+                            <span class="menu-text ms-2">Kategori Buku</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('/admin/alat') }}"
-                            class="nav-link text-white {{ request()->is('admin/alat*') ? 'active' : '' }}">
-                            <i class="bi bi-tools"></i>
-                            <span class="menu-text ms-2">Alat</span>
+                        <a href="{{ url('/admin/buku') }}"
+                            class="nav-link text-white {{ request()->is('admin/buku*') ? 'active' : '' }}">
+                            <i class="bi bi-book"></i>
+                            <span class="menu-text ms-2">Manajemen Buku</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </li>
-
-        @php
-        $isMonitoringOpen = request()->is('admin/peminjaman*') ||
-        request()->is('admin/denda*');
-        @endphp
 
         <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                href="#monitoringMenu" aria-expanded="{{ $isMonitoringOpen ? 'true' : 'false' }}">
-
-                <span>
-                    <i class="bi bi-bar-chart"></i>
-                    <span class="menu-text ms-2">Monitoring</span>
-                </span>
-
-                <i class="bi bi-chevron-down small"></i>
+            <a href="{{ route('admin.peminjaman.index') }}"
+                class="nav-link text-white {{ request()->routeIs('admin.peminjaman.*') ? 'active' : '' }}">
+                <i class="bi bi-check2-circle"></i>
+                <span class="menu-text ms-2">Monitoring Peminjaman</span>
             </a>
-
-            <div class="collapse {{ $isMonitoringOpen ? 'show' : '' }}" id="monitoringMenu">
-                <ul class="nav flex-column ms-3 mt-2">
-
-                    <li class="nav-item">
-                        <a href="{{ route('admin.peminjaman.index') }}"
-                            class="nav-link text-white {{ request()->routeIs('admin.peminjaman.*') ? 'active' : '' }}">
-                            <i class="bi bi-box-seam"></i>
-                            <span class="menu-text ms-2">Peminjaman</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('admin.denda.index') }}"
-                            class="nav-link text-white {{ request()->routeIs('admin.denda*') ? 'active' : '' }}">
-                            <i class="bi bi-cash-stack"></i>
-                            <span class="menu-text ms-2">Denda</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
         </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.pengembalian.index') }}"
+                class="nav-link text-white {{ request()->routeIs('admin.pengembalian*') ? 'active' : '' }}">
+                <i class="bi bi-arrow-return-right"></i>
+                <span class="menu-text ms-2">Pengembalian Buku</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.denda.index') }}"
+                class="nav-link text-white {{ request()->routeIs('admin.denda*') ? 'active' : '' }}">
+                <i class="bi bi-cash-stack"></i>
+                <span class="menu-text ms-2">Data Denda</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('admin.laporan.index') }}"
+                class="nav-link text-white {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-text"></i>
+                <span class="menu-text ms-2">Laporan Perpustakaan</span>
+            </a>
+        </li>
+
+
 
         <li class="nav-item">
             <a href="{{ route('admin.log_aktivitas.index') }}"
@@ -146,8 +144,8 @@
                     <li class="nav-item">
                         <a href="{{ route('peminjam.kategori.index') }}"
                             class="nav-link text-white {{ request()->routeIs('peminjam.kategori.*') ? 'active' : '' }}">
-                            <i class="bi bi-box-seam"></i>
-                            <span class="menu-text ms-2">Pinjam Alat</span>
+                            <i class="bi bi-book"></i>
+                            <span class="menu-text ms-2">Pinjam Buku</span>
                         </a>
                     </li>
 
@@ -172,64 +170,7 @@
         </li>
         @endif
 
-        @if(auth()->user()->role === 'petugas')
-        @php
-        $isTransaksiOpen = request()->is('petugas/peminjaman*') ||
-        request()->is('petugas/pengembalian*') ||
-        request()->is('petugas/denda*');
-        request()->is('petugas/laporan*');
-        @endphp
 
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                href="#transaksiMenu" aria-expanded="{{ $isTransaksiOpen ? 'true' : 'false' }}">
-
-                <span>
-                    <i class="bi bi-folder-check"></i>
-                    <span class="menu-text ms-2">Transaksi</span>
-                </span>
-
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-
-            <div class="collapse {{ $isTransaksiOpen ? 'show' : '' }}" id="transaksiMenu">
-                <ul class="nav flex-column ms-3 mt-2">
-
-                    <li class="nav-item">
-                        <a href="{{ route('petugas.peminjaman.index') }}"
-                            class="nav-link text-white {{ request()->routeIs('petugas.peminjaman.*') ? 'active' : '' }}">
-                            <i class="bi bi-check2-circle"></i>
-                            <span class="menu-text ms-2">Approval Peminjaman</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('petugas.pengembalian.index') }}"
-                            class="nav-link text-white {{ request()->routeIs('petugas.pengembalian*') ? 'active' : '' }}">
-                            <i class="bi bi-arrow-return-right"></i>
-                            <span class="menu-text ms-2">Cek Pengembalian</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ route('petugas.denda.index') }}"
-                            class="nav-link text-white {{ request()->routeIs('petugas.denda*') ? 'active' : '' }}">
-                            <i class="bi bi-cash-stack"></i>
-                            <span class="menu-text ms-2">Denda Peminjam</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('petugas.laporan.index') }}"
-                class="nav-link text-white {{ request()->routeIs('petugas.laporan.*') ? 'active' : '' }}">
-                <i class="bi bi-file-earmark-text"></i>
-                <span class="menu-text ms-2">Laporan</span>
-            </a>
-        </li>
-        @endif
 
         <li class="nav-item">
             <a href="{{ route('profile.show') }}"

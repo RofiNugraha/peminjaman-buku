@@ -5,7 +5,7 @@
         </button>
 
         <span class="navbar-brand fw-semibold">
-            Sistem Peminjaman
+            Perpustakaan Digital
         </span>
 
         <div class="ms-auto d-flex align-items-center gap-3">

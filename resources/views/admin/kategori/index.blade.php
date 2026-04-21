@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Manajemen Kategori</h3>
-    <p class="mb-0">Kelola data kategori alat secara terpusat</p>
+    <h3 class="mb-1">Manajemen Kategori Buku</h3>
+    <p class="mb-0">Kelola data kategori buku secara terpusat</p>
 </div>
 
 <div class="card mb-3">
@@ -28,7 +28,7 @@
 
         <a href="{{ route('kategori.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i>
-            Tambah Kategori
+            Tambah Kategori Buku
         </a>
 
     </div>

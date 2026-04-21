@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Peminjam;
 
 use App\Http\Controllers\Controller;
-use App\Models\Alat;
+use App\Models\Buku;
 use App\Models\Peminjaman;
 use App\Models\PeminjamanItem;
 use Carbon\Carbon;
@@ -28,7 +28,7 @@ class PeminjamanController extends Controller
         $dateTo   = $request->date_to;
 
         $peminjamanItems = PeminjamanItem::with([
-            'alat.kategoris',
+            'buku.kategoris',
             'peminjaman'
         ])
         ->whereHas('peminjaman', function ($q) {
@@ -36,8 +36,8 @@ class PeminjamanController extends Controller
         })
 
         ->when($search, function ($q) use ($search) {
-            $q->whereHas('alat', function ($sub) use ($search) {
-                $sub->where('nama_alat', 'like', "%{$search}%");
+            $q->whereHas('buku', function ($sub) use ($search) {
+                $sub->where('judul', 'like', "%{$search}%");
             });
         })
 
@@ -81,7 +81,7 @@ class PeminjamanController extends Controller
         );
     }
 
-    public function create(Alat $alat)
+    public function create(Buku $buku)
     {
         $user = Auth::user();
 
@@ -95,17 +95,17 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Akun Anda tidak aktif.');
         }
 
-        if ($alat->stok <= 0) {
-            return back()->with('error', 'Stok alat habis.');
+        if ($buku->stok <= 0) {
+            return back()->with('error', 'Stok buku habis.');
         }
 
-        return view('peminjam.peminjaman.create', compact('alat'));
+        return view('peminjam.peminjaman.create', compact('buku'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_alat' => ['required', 'exists:alats,id'],
+            'id_buku' => ['required', 'exists:bukus,id'],
             'qty'     => ['required', 'integer', 'min:1'],
             'tgl_pinjam' => [
                 'required',
@@ -135,8 +135,8 @@ class PeminjamanController extends Controller
                 }
             ],
         ], [
-            'id_alat.required' => 'Silakan pilih alat yang ingin dipinjam.',
-            'id_alat.exists' => 'Alat yang dipilih tidak ditemukan.',
+            'id_buku.required' => 'Silakan pilih buku yang ingin dipinjam.',
+            'id_buku.exists' => 'Buku yang dipilih tidak ditemukan.',
             'qty.required' => 'Jumlah peminjaman wajib diisi.',
             'qty.integer' => 'Jumlah peminjaman harus berupa angka.',
             'qty.min' => 'Jumlah minimal peminjaman adalah 1.',
@@ -148,19 +148,19 @@ class PeminjamanController extends Controller
             'tgl_kembali.after_or_equal' => 'Tanggal kembali tidak boleh sebelum tanggal pinjam.',
         ]);
 
-        $alat = Alat::findOrFail($request->id_alat);
+        $buku = Buku::findOrFail($request->id_buku);
 
-        if ($request->qty > $alat->stok) {
+        if ($request->qty > $buku->stok) {
             return back()
                 ->withErrors(['qty' => 'Jumlah yang diminta melebihi stok yang tersedia.'])
                 ->withInput();
         }
 
-        $stokMenunggu = PeminjamanItem::where('id_alat', $alat->id)
+        $stokMenunggu = PeminjamanItem::where('id_buku', $buku->id)
             ->whereHas('peminjaman', fn($q) => $q->where('status', 'menunggu'))
             ->sum('qty');
 
-        if (($stokMenunggu + $request->qty) > $alat->stok) {
+        if (($stokMenunggu + $request->qty) > $buku->stok) {
             return back()
                 ->withErrors(['qty' => 'Sebagian stok sedang dalam proses peminjaman oleh pengguna lain. Silakan coba beberapa saat lagi.'])
                 ->withInput();
@@ -174,7 +174,7 @@ class PeminjamanController extends Controller
                 return back()->with('error', 'Terlalu banyak pengajuan. Tunggu proses sebelumnya.');
             }
 
-        DB::transaction(function () use ($request, $alat) {
+        DB::transaction(function () use ($request, $buku) {
 
             $peminjaman = Peminjaman::create([
                 'id_user'       => Auth::id(),
@@ -187,14 +187,14 @@ class PeminjamanController extends Controller
 
             PeminjamanItem::create([
                 'id_peminjaman' => $peminjaman->id,
-                'id_alat'       => $request->id_alat,
+                'id_buku'       => $request->id_buku,
                 'qty'           => $request->qty,
             ]);
 
             logAktivitas(
                 'Menambahkan',
                 'Peminjaman',
-                "Mengajukan peminjaman alat '{$alat->nama_alat}' sebanyak {$request->qty} unit (Kode {$peminjaman->kode_peminjaman})"
+                "Mengajukan peminjaman buku '{$buku->judul}' sebanyak {$request->qty} unit (Kode {$peminjaman->kode_peminjaman})"
             );
         });
 
@@ -211,7 +211,7 @@ class PeminjamanController extends Controller
 
         $peminjaman->load([
             'user.profilSiswa.dataSiswa',
-            'items.alat.kategoris',
+            'items.buku.kategoris',
             'approvedBy',
             'rejectedBy'
         ]);

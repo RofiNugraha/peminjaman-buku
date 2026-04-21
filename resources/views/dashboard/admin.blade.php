@@ -19,8 +19,8 @@
         <div class="card dashboard-card d-flex flex-row align-items-stretch">
             <div class="card-indicator indicator-success"></div>
             <div class="card-body">
-                <h6>Total Alat</h6>
-                <h3>{{ $totalAlat ?? 0 }}</h3>
+                <h6>Total Buku</h6>
+                <h3>{{ $totalBuku ?? 0 }}</h3>
             </div>
         </div>
     </div>
@@ -38,6 +38,26 @@
     <div class="col-md-3 col-sm-6">
         <div class="card dashboard-card d-flex flex-row align-items-stretch">
             <div class="card-indicator indicator-danger"></div>
+            <div class="card-body">
+                <h6>Menunggu Approval</h6>
+                <h3>{{ $menungguApproval ?? 0 }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card d-flex flex-row align-items-stretch">
+            <div class="card-indicator indicator-info"></div>
+            <div class="card-body">
+                <h6>Pengembalian Hari Ini</h6>
+                <h3>{{ $pengembalianHariIni ?? 0 }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card d-flex flex-row align-items-stretch">
+            <div class="card-indicator indicator-secondary"></div>
             <div class="card-body">
                 <h6>Log Aktivitas</h6>
                 <h3>{{ $totalLog ?? 0 }}</h3>
