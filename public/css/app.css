@@ -1,13 +1,17 @@
 :root {
-    --color-primary: #0d0c20;
+    --color-primary: #4F46E5;
     --color-primary-hover: #4338CA;
 
-    --color-sidebar: #458291;
-    --color-sidebar-hover: #4a808a;
+    --color-sidebar: #1E293B;
+    --color-sidebar-hover: #334155;
 
     --color-bg: #F8FAFC;
     --color-border: #E2E8F0;
     --color-text-muted: #64748B;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -65,7 +69,7 @@ body {
 }
 
 .btn-secondary {
-    background: #e5e7eb;
+    background: #818181;
     border: none;
 }
 

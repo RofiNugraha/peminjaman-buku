@@ -145,6 +145,73 @@ $statusColor = [
         </div>
     </div>
 
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h6 class="fw-semibold mb-3">Data Siswa</h6>
+
+                <div class="row gy-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">NISN</label>
+                        <div>{{ $dataSiswa->nisn ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Nama</label>
+                        <div>{{ $dataSiswa->nama ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Kelas</label>
+                        <div>{{ $dataSiswa->kelas ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Jurusan</label>
+                        <div>{{ $dataSiswa->jurusan ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Angkatan</label>
+                        <div>{{ $dataSiswa->tahun_angkatan ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Tahun Ajaran</label>
+                        <div>{{ $dataSiswa->tahun_ajaran ?? '-' }}</div>
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <h6 class="fw-semibold mb-3">Kontak</h6>
+
+                <div class="row gy-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">No. HP</label>
+                        <div>{{ $profil->no_hp ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">No. HP Orang Tua</label>
+                        <div>{{ $profil->no_hp_ortu ?? '-' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted">Alamat</label>
+                        <div>{{ $profil->alamat ?? '-' }}</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @push('scripts')

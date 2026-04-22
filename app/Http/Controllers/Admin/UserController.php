@@ -37,7 +37,7 @@ class UserController extends Controller
                 });
             })
             ->when($role, fn ($q) => $q->where('role', $role))
-            ->orderByRaw(" CASE WHEN role = 'petugas' THEN 1 WHEN role = 'admin' THEN 2 WHEN role = 'peminjam' THEN 3 END ")
+            ->orderByRaw(" CASE WHEN role = 'peminjam' THEN 1 WHEN role = 'admin' THEN 2 END ")
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
             ->withQueryString()
@@ -82,17 +82,17 @@ class UserController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
         
-        $validated['role'] = 'petugas';
+        $validated['role'] = 'peminjam';
         
         $user = User::create($validated);
 
         logAktivitas(
             'Menambahkan',
             'Manajemen Pengguna',
-            "Menambahkan user '{$user->nama}' (ID-{$user->id}) sebagai petugas"
+            "Menambahkan user '{$user->nama}' (ID-{$user->id}) sebagai peminjam"
         );
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('users.index')->with('success', 'Peminjam berhasil ditambahkan');
     }
 
     public function show(User $user)
@@ -102,71 +102,39 @@ class UserController extends Controller
         return view('admin.users.show', compact('user'));
     }
 
-    public function edit(User $user)
-    {
-        return view('admin.users.edit', compact('user'));
-    }
-
-    public function update(Request $request, User $user)
-    {
-        $auth = Auth::user();
-
-        if ($user->id === $auth->id) {
-            return back()->with('error', 'Tidak boleh mengubah akun sendiri.');
-        }
-
-        if ($user->role === 'admin') {
-            return back()->with('error', 'Tidak boleh mengubah admin.');
-        }
-
-        $validated = $request->validate([
-            'role' => ['required', Rule::in(['petugas', 'peminjam'])]
-        ]);
-
-        if (!in_array($user->role, ['petugas', 'peminjam'])) {
-            return back()->with('error', 'Role tidak valid.');
-        }
-
-        $roleLama = $user->role;
-        
-        $user->update([
-            'role' => $validated['role']
-        ]);
-
-        logAktivitas(
-            'Mengubah',
-            'Manajemen Pengguna',
-            "Mengubah role user '{$user->nama}' (ID-{$user->id}) dari '{$roleLama}' menjadi '{$validated['role']}'"
-        );
-
-        return redirect()->route('users.index')->with('success', 'Role berhasil diperbarui');
-    }
 
     public function destroy(User $user)
     {
         $auth = Auth::user();
-        
+
         if ($user->id === $auth->id) {
             return back()->with('error', 'Tidak boleh menghapus akun sendiri.');
         }
-        
+
         if ($user->role === 'admin') {
-            return back()->with('error', 'Tidak boleh mengubah akun admin.');
+            return back()->with('error', 'Tidak boleh menghapus akun admin.');
+        }
+
+        if ($user->role !== 'peminjam') {
+            return back()->with('error', 'Hanya bisa menghapus akun peminjam.');
+        }
+
+        if ($user->peminjamans()->exists()) {
+            return back()->with('error', 'User tidak bisa dihapus karena masih memiliki riwayat peminjaman.');
         }
 
         $namaUser = $user->nama;
         $idUser   = $user->id;
-        $roleUser = $user->role;
 
         $user->delete();
 
         logAktivitas(
             'Menghapus',
             'Manajemen Pengguna',
-            "Menghapus user '{$namaUser}' (ID-{$idUser}) dengan role '{$roleUser}'"
+            "Menghapus peminjam '{$namaUser}' (ID-{$idUser})"
         );
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('users.index')->with('success', 'Peminjam berhasil dihapus');
     }
 
 }

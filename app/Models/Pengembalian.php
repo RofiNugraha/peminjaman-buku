@@ -10,7 +10,7 @@ class Pengembalian extends Model
 
     protected $fillable = [
         'id_peminjaman',
-        'id_petugas',
+        'id_admin',
         'tgl_dikembalikan',
         'hari_telat',
         'denda_telat',
@@ -29,7 +29,7 @@ class Pengembalian extends Model
 
     public function petugas()
     {
-        return $this->belongsTo(User::class, 'id_petugas');
+        return $this->belongsTo(User::class, 'id_admin');
     }
 
     public function items()

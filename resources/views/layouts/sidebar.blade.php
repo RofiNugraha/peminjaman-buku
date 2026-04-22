@@ -45,7 +45,7 @@
                         <a href="{{ url('/admin/users') }}"
                             class="nav-link text-white {{ request()->is('admin/users*') ? 'active' : '' }}">
                             <i class="bi bi-people"></i>
-                            <span class="menu-text ms-2">Manajemen User</span>
+                            <span class="menu-text ms-2">Manajemen Peminjam</span>
                         </a>
                     </li>
 

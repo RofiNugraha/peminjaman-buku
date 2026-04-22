@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function pengembalians()
     {
-        return $this->hasMany(Pengembalian::class, 'id_petugas');
+        return $this->hasMany(Pengembalian::class, 'id_admin');
     }
 
     public function profilSiswa()

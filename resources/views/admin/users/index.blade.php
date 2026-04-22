@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title','Manajemen User')
+@section('title','Manajemen Peminjam')
 
 @section('content')
 <div class="page-header mb-4">
-    <h3 class="mb-1">Manajemen User</h3>
-    <p class="mb-0">Kelola data pengguna sistem secara terpusat</p>
+    <h3 class="mb-1">Manajemen Peminjam</h3>
+    <p class="mb-0">Kelola data peminjam sistem secara terpusat</p>
 </div>
 
 <div class="card mb-3">
@@ -23,9 +23,8 @@
                 <label class="form-label small">Role</label>
                 <select id="filterRole" name="role" class="form-select">
                     <option value="">Semua</option>
-                    <option value="admin">Admin</option>
-                    <option value="petugas">Petugas</option>
                     <option value="peminjam">Peminjam</option>
+                    <option value="admin">Admin</option>
                 </select>
             </div>
 
@@ -41,7 +40,7 @@
 
         <a href="{{ route('users.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i>
-            Tambah Petugas
+            Tambah Peminjam
         </a>
 
     </div>

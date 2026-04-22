@@ -22,7 +22,10 @@ use App\Http\Controllers\ProfileController;
 use App\Models\DataSiswa;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 });
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -49,7 +52,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('role:admin')->prefix('admin')->group(function () {
-        Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class)->except(['edit', 'update']);
         
         Route::get('/data_siswa', [DataSiswaController::class, 'index'])->name('data_siswa.index');
         Route::post('/data_siswa/import', [DataSiswaController::class, 'import'])->name('data_siswa.import');

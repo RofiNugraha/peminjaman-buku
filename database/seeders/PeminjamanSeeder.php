@@ -13,11 +13,11 @@ class PeminjamanSeeder extends Seeder
 {
     public function run(): void
     {
-        $petugasList = User::where('role', 'petugas')->get();
+        $adminList = User::where('role', 'admin')->get();
 
         for ($i = 1; $i <= 120; $i++) {
 
-            DB::transaction(function () use ($petugasList) {
+            DB::transaction(function () use ($adminList) {
 
                 $user = User::where('role', 'peminjam')
                     ->whereHas('profilSiswa.dataSiswa')
@@ -38,10 +38,10 @@ class PeminjamanSeeder extends Seeder
                 };
 
                 $tglPinjam  = now()->subDays(rand(0, 5));
-                $tglKembali = now()->copy()->addDays(rand(1, 7));
+                $tglKembali = $tglPinjam->copy()->addDays(rand(3, 7));
 
                 $qty = rand(1, min(2, $buku->stok));
-                $petugas = $petugasList->random();
+                $admin = $adminList->isNotEmpty() ? $adminList->random() : null;
 
                 $peminjaman = Peminjaman::create([
                     'kode_peminjaman' => 'PMJ-' . uniqid(),
@@ -52,11 +52,12 @@ class PeminjamanSeeder extends Seeder
                     'total_denda'   => 0,
                     'status_denda'  => 'tidak_ada',
 
-                    'approved_by'   => in_array($status, ['disetujui', 'dikembalikan']) ? $petugas->id : null,
-                    'approved_at'   => in_array($status, ['disetujui', 'dikembalikan']) ? now()->subDays(rand(0, 3)) : null,
+                    // APPROVAL OLEH ADMIN
+                    'approved_by' => in_array($status, ['disetujui', 'dikembalikan']) ? $admin?->id : null,
+                    'approved_at' => in_array($status, ['disetujui', 'dikembalikan']) ? $tglPinjam->copy()->addHours(rand(1, 24)) : null,
 
-                    'rejected_by'   => $status === 'ditolak' ? $petugas->id : null,
-                    'rejected_at'   => $status === 'ditolak' ? now()->subDays(rand(0, 3)) : null,
+                    'rejected_by' => $status === 'ditolak' ? $admin?->id : null,
+                    'rejected_at' => $status === 'ditolak' ? $tglPinjam->copy()->addHours(rand(1, 24)) : null,
                 ]);
 
                 PeminjamanItem::create([
@@ -65,30 +66,34 @@ class PeminjamanSeeder extends Seeder
                     'qty'           => $qty,
                 ]);
 
+                // stok berkurang saat disetujui
                 if (in_array($status, ['disetujui', 'dikembalikan'])) {
                     $buku->decrement('stok', $qty);
                 }
 
+                // jika sudah dikembalikan
                 if ($status === 'dikembalikan') {
-                    $buku->increment('stok', $qty);
-                }
 
-                if ($status === 'dikembalikan' && rand(1, 100) <= 30) {
+                    // kemungkinan telat
+                    $hariTelat = rand(0, 1) ? rand(1, 5) : 0;
 
-                    $hariTelat = rand(1, 5);
-                    $denda = $hariTelat * 5000;
+                    $denda = $hariTelat * $buku->denda_per_hari;
 
                     $peminjaman->update([
                         'total_denda'  => $denda,
-                        'status_denda' => 'belum',
+                        'status_denda' => $denda > 0 ? 'belum' : 'tidak_ada',
                     ]);
+
+                    // stok kembali
+                    $buku->increment('stok', $qty);
                 }
             });
         }
 
+        // DATA KHUSUS TERLAMBAT (BELUM DIKEMBALIKAN)
         for ($i = 1; $i <= 5; $i++) {
 
-            DB::transaction(function () use ($petugasList) {
+            DB::transaction(function () use ($adminList) {
 
                 $user = User::where('role', 'peminjam')
                     ->whereHas('profilSiswa.dataSiswa')
@@ -99,23 +104,24 @@ class PeminjamanSeeder extends Seeder
 
                 if (!$user || !$buku) return;
 
-                $qty = 1;
-                $petugas = $petugasList->random();
+                $admin = $adminList->isNotEmpty() ? $adminList->random() : null;
 
                 $tglPinjam  = now()->subDays(rand(7, 10));
-                $tglKembali = now()->subDays(rand(1, 5));
+                $tglKembali = now()->subDays(rand(1, 3)); // sudah lewat
+
+                $qty = 1;
 
                 $peminjaman = Peminjaman::create([
-                    'kode_peminjaman' => 'TELAT-' . uniqid(),
+                    'kode_peminjaman' => 'PMJ-' . uniqid(),
                     'id_user'       => $user->id,
                     'tgl_pinjam'    => $tglPinjam,
                     'tgl_kembali'   => $tglKembali,
                     'status'        => 'disetujui',
                     'total_denda'   => 0,
-                    'status_denda'  => 'tidak_ada',
+                    'status_denda'  => 'belum',
 
-                    'approved_by'   => $petugas->id,
-                    'approved_at'   => now()->subDays(5),
+                    'approved_by'   => $admin?->id,
+                    'approved_at'   => $tglPinjam->copy()->addHours(2),
                 ]);
 
                 PeminjamanItem::create([
@@ -128,6 +134,6 @@ class PeminjamanSeeder extends Seeder
             });
         }
 
-        $this->command->info('Seeder peminjaman siap (normal + telat)');
+        $this->command->info('Seeder peminjaman (admin-based) berhasil');
     }
 }

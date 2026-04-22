@@ -38,7 +38,7 @@ class PengembalianSeeder extends Seeder
 
                 $pengembalian = Pengembalian::create([
                     'id_peminjaman'    => $peminjaman->id,
-                    'id_petugas'       => 1,
+                    'id_admin'       => 1,
                     'tgl_dikembalikan'=> $tglDikembalikan,
                     'hari_telat'       => $hariTelat,
                     'denda_telat'      => $dendaTelat,

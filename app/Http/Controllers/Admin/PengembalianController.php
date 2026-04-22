@@ -127,7 +127,7 @@ class PengembalianController extends Controller
 
             $pengembalian = Pengembalian::create([
                 'id_peminjaman'     => $peminjaman->id,
-                'id_petugas'        => Auth::id(),
+                'id_admin'        => Auth::id(),
                 'tgl_dikembalikan' => $today,
                 'hari_telat'        => $hariTelat,
                 'denda_telat'       => $dendaTelat,

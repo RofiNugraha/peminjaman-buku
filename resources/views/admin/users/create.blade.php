@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<h4 class="mb-3">Tambah Petugas</h4>
-<p class="text-muted mb-4">Isi data pengguna dengan lengkap</p>
+<h4 class="mb-3">Tambah Peminjam</h4>
+<p class="text-muted mb-4">Isi data peminjam dengan lengkap</p>
 
 <form method="POST" action="{{ route('users.store') }}">
     @csrf

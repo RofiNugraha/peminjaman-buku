@@ -42,18 +42,13 @@
                             <i class="bi bi-eye"></i>
                         </a>
 
-                        <a href="{{ $user->role === 'admin' ? '#' : route('users.edit',$user) }}"
-                            class="btn btn-sm btn-light border {{ $user->role === 'admin' ? 'disabled' : '' }}">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-
                         <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy',$user) }}"
                             method="POST">
                             @csrf @method('DELETE')
 
                             <button type="button" class="btn btn-sm btn-light border btn-delete"
                                 data-id="{{ $user->id }}"
-                                {{ in_array($user->role, ['admin','peminjam']) ? 'disabled' : '' }}>
+                                {{ $user->role !== 'peminjam' ? 'disabled' : '' }}>
                                 <i class="bi bi-trash text-danger"></i>
                             </button>
                         </form>

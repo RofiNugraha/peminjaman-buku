@@ -11,24 +11,27 @@ class KategoriSeeder extends Seeder
     public function run(): void
     {
         $kategoris = [
-            'Elektronik',
-            'Kebersihan',
-            'Hiburan',
-            'Pakaian',
-            'Perkakas',
-            'Dekorasi',
-            'Kategori 1',
-            'Kategori 2',
-            'Kategori 3',
-            'Kategori 4',
-            'Kategori 5',
-            'Kategori 6',
+            'Matematika',
+            'Bahasa Indonesia',
+            'Bahasa Inggris',
+            'IPA',
+            'Fisika',
+            'Kimia',
+            'Biologi',
+            'IPS',
+            'Sejarah',
+            'Geografi',
+            'Ekonomi',
+            'PKN',
+            'Informatika',
+            'Seni Budaya',
+            'PJOK',
         ];
 
         foreach ($kategoris as $nama) {
             Kategori::create([
                 'nama_kategori' => $nama,
-                'keterangan' => 'Kategori untuk perangkat ' . strtolower($nama),
+                'keterangan' => 'Buku mata pelajaran ' . $nama,
             ]);
         }
     }
