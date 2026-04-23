@@ -1,3 +1,183 @@
+# Sistem Peminjaman Buku
+
+Aplikasi manajemen peminjaman buku untuk perpustakaan sekolah yang dibangun menggunakan Laravel 11.
+
+## Persyaratan Sistem
+
+- PHP 8.2 atau lebih tinggi
+- Composer
+- Node.js & NPM
+- MySQL/MariaDB
+- Git
+
+## Cara Menjalankan Project
+
+### 1. Clone Repository
+
+```bash
+git clone <repository-url>
+cd peminjaman-buku
+```
+
+### 2. Install Dependencies PHP
+
+```bash
+composer install
+```
+
+### 3. Install Dependencies JavaScript
+
+```bash
+npm install
+```
+
+### 4. Setup Environment
+
+Salin file `.env.example` menjadi `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Kemudian generate application key:
+
+```bash
+php artisan key:generate
+```
+
+### 5. Konfigurasi Database
+
+Edit file `.env` dan sesuaikan konfigurasi database:
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=peminjaman_buku
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Jika menggunakan Laragon, database sudah tersedia. Buat database baru bernama `peminjaman_buku` melalui Laragon atau command line.
+
+#### Membuat Database (Jika belum ada)
+
+Menggunakan MySQL CLI:
+
+```bash
+mysql -u root -e "CREATE DATABASE peminjaman_buku;"
+```
+
+### 6. Setup Database
+
+Pilih salah satu dari dua cara berikut:
+
+#### Opsi A: Import Database Backup (Direkomendasikan)
+
+Jika ingin menggunakan data yang sudah tersedia di file backup:
+
+```bash
+mysql -u root peminjaman_buku < peminjaman_buku.sql
+```
+
+#### Opsi B: Migrasi Fresh dan Seed
+
+Jika ingin membuat database dari awal dengan migration:
+
+```bash
+php artisan migrate:fresh
+```
+
+Kemudian seed database dengan data contoh:
+
+```bash
+php artisan db:seed
+```
+
+### 7. Build Assets
+
+```bash
+npm run build
+```
+
+Atau untuk development mode dengan hot reload:
+
+```bash
+npm run dev
+```
+
+### 8. Jalankan Server
+
+Buka terminal baru dan jalankan perintah:
+
+```bash
+php artisan serve
+```
+
+Server akan berjalan di `http://localhost:8000`
+
+## Menjalankan Aplikasi (Setelah Setup)
+
+Setelah melakukan setup di atas, untuk menjalankan aplikasi kembali di lain waktu:
+
+### Terminal 1 - Jalankan Server Laravel
+
+```bash
+cd c:\laragon\www\peminjaman-buku
+php artisan serve
+```
+
+### Terminal 2 - Compile Assets (jika diperlukan)
+
+Jika ingin auto-compile CSS dan JavaScript saat development:
+
+```bash
+npm run dev
+```
+
+Atau jika hanya perlu sekali build:
+
+```bash
+npm run build
+```
+
+### Akses Aplikasi
+
+Buka browser dan kunjungi: `http://localhost:8000`
+
+## Informasi Login
+
+### Kredensial Default (Jika menggunakan backup peminjaman_buku.sql)
+
+Silakan check database atau konsultasikan dengan admin untuk mendapatkan kredensial login.
+
+Jika menggunakan data seed, sesuaikan kredensial yang tersedia di database setelah menjalankan `php artisan db:seed`.
+
+## Fitur Utama
+
+- Manajemen data buku dan kategori
+- Pengajuan peminjaman buku oleh siswa
+- Persetujuan peminjaman oleh admin/petugas
+- Manajemen pengembalian buku
+- Sistem denda otomatis untuk keterlambatan
+- Laporan peminjaman
+- Log aktivitas
+- Notifikasi kepada peminjam
+
+## Struktur Project
+
+- `app/` - Logika aplikasi (Models, Controllers, Services)
+- `resources/` - View templates dan assets
+- `routes/` - Definisi routes aplikasi
+- `database/` - Migrations dan seeders
+- `public/` - File publik yang dapat diakses
+
+## Support
+
+Untuk pertanyaan atau masalah, silakan buat issue di repository ini.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
