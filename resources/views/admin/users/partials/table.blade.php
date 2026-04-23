@@ -42,6 +42,12 @@
                             <i class="bi bi-eye"></i>
                         </a>
 
+                        @if($user->id !== Auth::id())
+                        <a href="{{ route('users.edit',$user) }}" class="btn btn-sm btn-light border">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        @endif
+
                         <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy',$user) }}"
                             method="POST">
                             @csrf @method('DELETE')

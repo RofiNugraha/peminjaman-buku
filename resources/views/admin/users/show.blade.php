@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title','Detail User')
+@section('title','Detail Peminjam')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="mb-1">Detail User</h3>
+        <h3 class="mb-1">Detail Peminjam</h3>
         <p class="text-muted mb-0">Informasi lengkap pengguna</p>
     </div>
 

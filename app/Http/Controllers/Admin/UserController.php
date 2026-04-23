@@ -36,7 +36,7 @@ class UserController extends Controller
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
-            ->when($role, fn ($q) => $q->where('role', $role))
+            ->when($role, fn($q) => $q->where('role', $role))
             ->orderByRaw(" CASE WHEN role = 'peminjam' THEN 1 WHEN role = 'admin' THEN 2 END ")
             ->orderBy($sortBy, $direction)
             ->paginate($perPage)
@@ -81,9 +81,9 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-        
+
         $validated['role'] = 'peminjam';
-        
+
         $user = User::create($validated);
 
         logAktivitas(
@@ -100,6 +100,41 @@ class UserController extends Controller
         $user->load('profilSiswa', 'dataSiswa');
 
         return view('admin.users.show', compact('user'));
+    }
+
+    public function edit(User $user)
+    {
+        $auth = Auth::user();
+
+        if ($user->id === $auth->id) {
+            return back()->with('error', 'Tidak boleh mengedit akun sendiri.');
+        }
+
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $auth = Auth::user();
+
+        if ($user->id === $auth->id) {
+            return back()->with('error', 'Tidak boleh mengedit akun sendiri.');
+        }
+
+        $validated = $request->validate([
+            'role' => 'required|in:admin,petugas,peminjam',
+        ]);
+
+        $oldRole = $user->role;
+        $user->update($validated);
+
+        logAktivitas(
+            'Mengubah',
+            'Manajemen Pengguna',
+            "Mengubah role user '{$user->nama}' (ID-{$user->id}) dari {$oldRole} menjadi {$validated['role']}"
+        );
+
+        return redirect()->route('users.index')->with('success', 'Role user berhasil diubah');
     }
 
 
@@ -136,5 +171,4 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'Peminjam berhasil dihapus');
     }
-
 }

@@ -1,0 +1,1 @@
+'Log recorded: ' . (\App\Models\LogAktivitas::count()  ? 'BERHASIL' : 'GAGAL') . '\n';

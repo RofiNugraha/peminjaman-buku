@@ -29,7 +29,7 @@
             <div class="mb-4">
                 <label class="form-label">Role</label>
                 <select name="role" class="form-select">
-                    @foreach(['petugas','peminjam'] as $role)
+                    @foreach(['admin','peminjam'] as $role)
                     <option value="{{ $role }}" @selected($user->role === $role)>
                         {{ ucfirst($role) }}
                     </option>

@@ -64,23 +64,23 @@
 <script src="{{ asset('js/admin-users.js') }}"></script>
 
 <script>
-document.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.addEventListener('click', function() {
-        let id = this.dataset.id;
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', function() {
+            let id = this.dataset.id;
 
-        Swal.fire({
-            title: 'Yakin?',
-            text: "Data tidak akan hilang permanen!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'hapus'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('delete-form-' + id).submit();
-            }
+            Swal.fire({
+                title: 'Yakin?',
+                text: "Data tidak akan hilang permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
         });
     });
-});
 </script>
 @endpush
 @endsection

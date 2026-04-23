@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title','Manajemen Kategori Buku')
+
 @section('content')
 <div class="page-header mb-4">
     <h3 class="mb-1">Manajemen Kategori Buku</h3>

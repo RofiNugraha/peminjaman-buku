@@ -1,0 +1,1 @@
+'Kmb-011: Denda calculation working: ' . (\App\Models\Peminjaman::where('total_denda', ', 0)- ? 'BERHASIL' : 'GAGAL') . '\n';

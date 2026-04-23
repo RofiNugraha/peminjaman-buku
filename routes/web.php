@@ -49,19 +49,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
     Route::put('/profile/siswa', [ProfileController::class, 'updateProfilSiswa'])->name('profile.siswa.update');
-    Route::get('/get-siswa/{nisn}', function ($nisn) {return DataSiswa::where('nisn', $nisn)->first();
+    Route::get('/get-siswa/{nisn}', function ($nisn) {
+        return DataSiswa::where('nisn', $nisn)->first();
     });
 
     Route::middleware('role:admin')->prefix('admin')->group(function () {
         Route::resource('users', UserController::class)->except(['edit', 'update']);
-        
+        Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+
         Route::get('/data_siswa', [DataSiswaController::class, 'index'])->name('data_siswa.index');
         Route::post('/data_siswa/import', [DataSiswaController::class, 'import'])->name('data_siswa.import');
-        
+
         Route::resource('kategori', KategoriController::class);
-        
+
         Route::resource('buku', BukuController::class);
-        
+
         Route::get('/peminjaman', [AdminPeminjamanController::class, 'index'])->name('admin.peminjaman.index');
         Route::get('/peminjaman/{peminjaman}', [AdminPeminjamanController::class, 'show'])->name('admin.peminjaman.show');
         Route::post('/peminjaman/{peminjaman}/approve', [AdminPeminjamanController::class, 'approve'])->name('admin.peminjaman.approve');
@@ -70,9 +73,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/pengembalian', [AdminPengembalianController::class, 'index'])->name('admin.pengembalian.index');
         Route::get('/pengembalian/{id}', [AdminPengembalianController::class, 'show'])->name('admin.pengembalian.show');
         Route::post('/pengembalian/{id}', [AdminPengembalianController::class, 'store'])->name('admin.pengembalian.store');
-        
+
         Route::get('/log_aktivitas', [LogAktivitasController::class, 'index'])->name('admin.log_aktivitas.index');
-        
+
         Route::get('/denda', [AdminDendaController::class, 'index'])->name('admin.denda.index');
         Route::get('/denda/{id}', [AdminDendaController::class, 'show'])->name('admin.denda.show');
         Route::post('/denda/{peminjaman}/ingatkan', [AdminDendaController::class, 'ingatkan'])->name('admin.denda.ingatkan');
