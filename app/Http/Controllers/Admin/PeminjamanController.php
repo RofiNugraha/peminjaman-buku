@@ -66,7 +66,9 @@ class PeminjamanController extends Controller
             $query->whereDate('tgl_pinjam', '<=', $dateTo);
         }
 
-        $peminjamans = $query->orderBy('created_at', $direction)
+        $peminjamans = $query
+            ->orderByRaw("CASE WHEN status = 'menunggu' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', $direction)
             ->paginate($perPage)
             ->appends($request->only(['tab','search','status','date_from','date_to','direction','per_page']));
 

@@ -20,9 +20,10 @@ use App\Http\Controllers\Peminjam\NotificationController;
 use App\Http\Controllers\Peminjam\PeminjamanController;
 use App\Http\Controllers\ProfileController;
 use App\Models\DataSiswa;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    if (auth()->check()) {
+    if (Auth::check()) {
         return redirect()->route('dashboard');
     }
     return redirect()->route('login');

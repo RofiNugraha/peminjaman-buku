@@ -5,11 +5,16 @@
 @section('content')
 <div class="auth-wrapper">
     <div class="auth-card">
-        <div class="auth-left d-none d-md-flex">
-            <div class="auth-overlay">
-                <h5 class="brand-title">Sistem Peminjaman</h5>
+        <div class="auth-left d-none d-md-flex align-items-center justify-content-center">
+            <div class="auth-overlay text-center">
+
+                <img src="{{ asset('storage/logo/logo_putih.png') }}" alt="Logo"
+                    style="height: 240px; width: auto; margin-bottom: 15px;">
+
+                <h5 class="brand-title">Perpustakaan Sekolah Digital</h5>
+
                 <p class="brand-subtitle">
-                    Buat akun untuk mulai menggunakan sistem perpustakaan digital sekolah.
+                    Buat akun untuk mulai menggunakan sistem Perpustakaan Sekolah Digital.
                 </p>
             </div>
         </div>

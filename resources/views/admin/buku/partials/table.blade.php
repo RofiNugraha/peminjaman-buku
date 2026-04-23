@@ -52,7 +52,7 @@
                 </td>
 
                 <td>
-                    <span class="badge bg-light text-dark border">
+                    <span class="badge bg-primary bg-opacity-10 text-primary">
                         {{ $buku->stok }}
                     </span>
                 </td>

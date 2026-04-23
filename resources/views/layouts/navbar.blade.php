@@ -4,9 +4,13 @@
             <i class="bi bi-list"></i>
         </button>
 
-        <span class="navbar-brand fw-semibold">
-            Perpustakaan Digital
-        </span>
+        <div class="d-flex align-items-center gap-2">
+            <img src="{{ asset('storage/logo/logo_putih.png') }}" alt="Logo" style="height: 42px; width: auto;">
+
+            <span class="menu-text fw-semibold">
+                Perpustakaan Sekolah Digital
+            </span>
+        </div>
 
         <div class="ms-auto d-flex align-items-center gap-3">
 

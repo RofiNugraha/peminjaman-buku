@@ -47,11 +47,9 @@
                         <div class="col-md-6">
                             <label class="form-label">Tanggal Pinjam</label>
                             <input type="date" name="tgl_pinjam"
-                                class="form-control @error('tgl_pinjam') is-invalid @enderror"
-                                value="{{ old('tgl_pinjam') }}" min="{{ now()->toDateString() }}">
-                            @error('tgl_pinjam')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                                class="form-control"
+                                value="{{ now()->toDateString() }}" readonly>
+                            <small class="text-muted d-block mt-1">Tanggal pinjam ditetapkan pada hari ini</small>
                         </div>
 
                         <div class="col-md-6">
@@ -93,11 +91,8 @@
 </div>
 
 <script>
-document.querySelector('[name="tgl_pinjam"]').addEventListener('change', function() {
-    const kembali = document.querySelector('[name="tgl_kembali"]');
-    kembali.min = this.value;
-    kembali.value = '';
-});
+// Set minimum tanggal kembali ke hari ini
+document.querySelector('[name="tgl_kembali"]').min = '{{ now()->toDateString() }}';
 
 document.getElementById('formPeminjaman').addEventListener('submit', function() {
     const btn = document.getElementById('btnPinjam');

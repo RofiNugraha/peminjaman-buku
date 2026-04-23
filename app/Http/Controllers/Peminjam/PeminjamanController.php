@@ -110,12 +110,7 @@ class PeminjamanController extends Controller
             'tgl_pinjam' => [
                 'required',
                 'date',
-                'after_or_equal:today',
-                function ($attr, $value, $fail) {
-                    if (Carbon::parse($value)->isWeekend()) {
-                        $fail('Tanggal pinjam tidak boleh pada hari Sabtu atau Minggu.');
-                    }
-                }
+                'date_equals:today',
             ],
             'tgl_kembali' => [
                 'required',
@@ -142,7 +137,7 @@ class PeminjamanController extends Controller
             'qty.min' => 'Jumlah minimal peminjaman adalah 1.',
             'tgl_pinjam.required' => 'Tanggal pinjam wajib diisi.',
             'tgl_pinjam.date' => 'Tanggal pinjam tidak valid.',
-            'tgl_pinjam.after_or_equal' => 'Tanggal pinjam tidak boleh sebelum hari ini.',
+            'tgl_pinjam.date_equals' => 'Tanggal pinjam harus hari ini.',
             'tgl_kembali.required' => 'Tanggal kembali wajib diisi.',
             'tgl_kembali.date' => 'Tanggal kembali tidak valid.',
             'tgl_kembali.after_or_equal' => 'Tanggal kembali tidak boleh sebelum tanggal pinjam.',

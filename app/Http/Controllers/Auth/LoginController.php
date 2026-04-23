@@ -50,7 +50,6 @@ class LoginController extends Controller
 
         sleep(1);
 
-        // ❌ LOG AKTIVITAS (LOGIN GAGAL)
         logAktivitas(
             'Login',
             'Autentikasi',
