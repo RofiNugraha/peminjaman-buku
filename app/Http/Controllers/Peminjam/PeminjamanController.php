@@ -16,7 +16,7 @@ class PeminjamanController extends Controller
     public function index(Request $request)
     {
         $perPage = (int) $request->get('per_page', 10);
-        if (!in_array($perPage, [5,10,25,50,100])) {
+        if (!in_array($perPage, [5, 10, 25, 50, 100])) {
             $perPage = 10;
         }
 
@@ -31,53 +31,67 @@ class PeminjamanController extends Controller
             'buku.kategoris',
             'peminjaman'
         ])
-        ->whereHas('peminjaman', function ($q) {
-            $q->where('id_user', Auth::id());
-        })
+            ->whereHas('peminjaman', function ($q) {
+                $q->where('id_user', Auth::id());
+            })
 
-        ->when($search, function ($q) use ($search) {
-            $q->whereHas('buku', function ($sub) use ($search) {
-                $sub->where('judul', 'like', "%{$search}%");
-            });
-        })
+            ->when($search, function ($q) use ($search) {
+                $q->whereHas('buku', function ($sub) use ($search) {
+                    $sub->where('judul', 'like', "%{$search}%");
+                });
+            })
 
-        ->when($status, function ($q) use ($status) {
-            $q->whereHas('peminjaman', fn ($sub) =>
-                $sub->where('status', $status)
-            );
-        })
+            ->when($status, function ($q) use ($status) {
+                $q->whereHas(
+                    'peminjaman',
+                    fn($sub) =>
+                    $sub->where('status', $status)
+                );
+            })
 
-        ->when($dateFrom, fn ($q) =>
-            $q->whereHas('peminjaman', fn ($sub) =>
-                $sub->whereDate('tgl_pinjam', '>=', $dateFrom)
+            ->when(
+                $dateFrom,
+                fn($q) =>
+                $q->whereHas(
+                    'peminjaman',
+                    fn($sub) =>
+                    $sub->whereDate('tgl_pinjam', '>=', $dateFrom)
+                )
             )
-        )
 
-        ->when($dateTo, fn ($q) =>
-            $q->whereHas('peminjaman', fn ($sub) =>
-                $sub->whereDate('tgl_pinjam', '<=', $dateTo)
+            ->when(
+                $dateTo,
+                fn($q) =>
+                $q->whereHas(
+                    'peminjaman',
+                    fn($sub) =>
+                    $sub->whereDate('tgl_pinjam', '<=', $dateTo)
+                )
             )
-        )
 
-        ->join('peminjamans', 'peminjaman_items.id_peminjaman', '=', 'peminjamans.id')
-        ->orderByRaw("
+            ->join('peminjamans', 'peminjaman_items.id_peminjaman', '=', 'peminjamans.id')
+            ->orderByRaw("
             CASE 
                 WHEN peminjamans.status = 'menunggu' THEN 0 
                 ELSE 1 
             END
         ")
-        ->orderBy('peminjamans.tgl_pinjam', $direction)
+            ->orderBy('peminjamans.tgl_pinjam', $direction)
 
-        ->select('peminjaman_items.*')
-        ->paginate($perPage)
-        ->withQueryString();
+            ->select('peminjaman_items.*')
+            ->paginate($perPage)
+            ->withQueryString();
 
         if ($request->ajax()) {
-        return view(
-            'peminjam.peminjaman.partials.table', compact('peminjamanItems', 'perPage'))->render();
+            return view(
+                'peminjam.peminjaman.partials.table',
+                compact('peminjamanItems', 'perPage')
+            )->render();
         }
 
-        return view('peminjam.peminjaman.index', compact('peminjamanItems', 'perPage')
+        return view(
+            'peminjam.peminjaman.index',
+            compact('peminjamanItems', 'perPage')
         );
     }
 
@@ -165,9 +179,9 @@ class PeminjamanController extends Controller
             ->where('status', 'menunggu')
             ->count();
 
-            if ($limit >= 3) {
-                return back()->with('error', 'Terlalu banyak pengajuan. Tunggu proses sebelumnya.');
-            }
+        if ($limit >= 3) {
+            return back()->with('error', 'Terlalu banyak pengajuan. Tunggu proses sebelumnya.');
+        }
 
         DB::transaction(function () use ($request, $buku) {
 

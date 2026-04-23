@@ -91,14 +91,14 @@
 </div>
 
 <script>
-// Set minimum tanggal kembali ke hari ini
-document.querySelector('[name="tgl_kembali"]').min = '{{ now()->toDateString() }}';
+    // Set minimum tanggal kembali ke hari ini
+    document.querySelector('[name="tgl_kembali"]').min = '{{ now()->toDateString() }}';
 
-document.getElementById('formPeminjaman').addEventListener('submit', function() {
-    const btn = document.getElementById('btnPinjam');
-    btn.disabled = true;
-    btn.innerText = 'Memproses...';
-});
+    document.getElementById('formPeminjaman').addEventListener('submit', function() {
+        const btn = document.getElementById('btnPinjam');
+        btn.disabled = true;
+        btn.innerText = 'Memproses...';
+    });
 </script>
 
 @endsection
