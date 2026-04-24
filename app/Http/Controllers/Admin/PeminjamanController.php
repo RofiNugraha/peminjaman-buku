@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Helpers\NotificationHelper;
 
 class PeminjamanController extends Controller
 {
     public function index(Request $request)
     {
         $perPage = (int) $request->get('per_page', 10);
-        if (!in_array($perPage, [5,10,25,50,100])) $perPage = 10;
+        if (!in_array($perPage, [5, 10, 25, 50, 100])) $perPage = 10;
 
         $tab       = $request->get('tab', 'aktif');
         $search    = $request->search;
@@ -31,8 +32,8 @@ class PeminjamanController extends Controller
             [$dateFrom, $dateTo] = [$dateTo, $dateFrom];
         }
 
-        $statusAktif = ['menunggu','disetujui'];
-        $statusNonAktif = ['dibatalkan','ditolak','kadaluarsa','dikembalikan'];
+        $statusAktif = ['menunggu', 'disetujui'];
+        $statusNonAktif = ['dibatalkan', 'ditolak', 'kadaluarsa', 'dikembalikan'];
         $statusFilter = $tab === 'aktif' ? $statusAktif : $statusNonAktif;
 
         $query = Peminjaman::with([
@@ -44,13 +45,13 @@ class PeminjamanController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('kode_peminjaman', 'like', "%{$search}%")
 
-                ->orWhereHas('user', function ($u) use ($search) {
-                    $u->where('nama', 'like', "%{$search}%");
-                })
+                    ->orWhereHas('user', function ($u) use ($search) {
+                        $u->where('nama', 'like', "%{$search}%");
+                    })
 
-                ->orWhereHas('user.profilSiswa.dataSiswa', function ($ds) use ($search) {
-                    $ds->where('nama', 'like', "%{$search}%");
-                });
+                    ->orWhereHas('user.profilSiswa.dataSiswa', function ($ds) use ($search) {
+                        $ds->where('nama', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -70,13 +71,13 @@ class PeminjamanController extends Controller
             ->orderByRaw("CASE WHEN status = 'menunggu' THEN 0 ELSE 1 END")
             ->orderBy('created_at', $direction)
             ->paginate($perPage)
-            ->appends($request->only(['tab','search','status','date_from','date_to','direction','per_page']));
+            ->appends($request->only(['tab', 'search', 'status', 'date_from', 'date_to', 'direction', 'per_page']));
 
         if ($request->ajax()) {
-            return view('admin.peminjaman.partials.table', compact('peminjamans','perPage','tab'))->render();
+            return view('admin.peminjaman.partials.table', compact('peminjamans', 'perPage', 'tab'))->render();
         }
 
-        return view('admin.peminjaman.index', compact('peminjamans','perPage','tab'));
+        return view('admin.peminjaman.index', compact('peminjamans', 'perPage', 'tab'));
     }
 
     public function show($id)
@@ -129,6 +130,13 @@ class PeminjamanController extends Controller
                 'approved_at'   => now(),
             ]);
 
+            NotificationHelper::create(
+                $peminjaman->id_user,
+                'Pengajuan Disetujui',
+                'Pengajuan peminjaman buku dengan kode ' . $peminjaman->kode_peminjaman . ' telah disetujui.',
+                $peminjaman
+            );
+
             logAktivitas(
                 'Mengubah',
                 'Peminjaman',
@@ -137,7 +145,7 @@ class PeminjamanController extends Controller
         });
 
         return redirect()->route('admin.peminjaman.index')
-            ->with('success','Pengajuan berhasil disetujui.');
+            ->with('success', 'Pengajuan berhasil disetujui.');
     }
 
     public function reject(Peminjaman $peminjaman)
@@ -156,6 +164,13 @@ class PeminjamanController extends Controller
             'rejected_at'   => now(),
         ]);
 
+        NotificationHelper::create(
+            $peminjaman->id_user,
+            'Pengajuan Ditolak',
+            'Pengajuan peminjaman buku dengan kode ' . $peminjaman->kode_peminjaman . ' telah ditolak.',
+            $peminjaman
+        );
+
         logAktivitas(
             'Mengubah',
             'Peminjaman',
@@ -163,6 +178,6 @@ class PeminjamanController extends Controller
         );
 
         return redirect()->route('admin.peminjaman.index')
-            ->with('success','Pengajuan berhasil ditolak.');
+            ->with('success', 'Pengajuan berhasil ditolak.');
     }
 }

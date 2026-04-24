@@ -188,9 +188,26 @@
                             <div>
                                 Rp {{ number_format($row->total_denda,0,',','.') }}
                             </div>
-                            <small class="text-muted">
-                                {{ strtoupper($row->status_denda) }}
-                            </small>
+                            @php
+                            $colors = [
+                            'belum' => 'danger',
+                            'lunas' => 'success',
+                            'tidak_ada' => 'secondary'
+                            ];
+
+                            $labels = [
+                            'belum' => 'belum lunas',
+                            'lunas' => 'lunas',
+                            'tidak_ada' => 'tidak ada'
+                            ];
+
+                            $status = $row->status_denda;
+                            @endphp
+
+                            <span
+                                class="badge bg-{{ $colors[$status] ?? 'secondary' }} bg-opacity-10 text-{{ $colors[$status] ?? 'secondary' }}">
+                                {{ $labels[$status] ?? 'tidak ada' }}
+                            </span>
                         </td>
                     </tr>
                     @empty

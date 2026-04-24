@@ -59,7 +59,7 @@
     </div>
 
     <div class="col-md-3 col-sm-6">
-        <div class="card dashboard-card d-flex flex-row align-items-stretch">
+        <div class="card dashboard-card">
             <div class="card-body">
                 <h6>Peminjaman Terlambat</h6>
                 <h4>{{ $terlambat ?? 0 }}</h4>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="col-md-3 col-sm-6">
-        <div class="card dashboard-card d-flex flex-row align-items-stretch">
+        <div class="card dashboard-card">
             <div class="card-body">
                 <h6>Denda Belum Dibayar</h6>
                 <h4>Rp {{ number_format($totalDendaBelum ?? 0) }}</h4>
@@ -81,18 +81,22 @@
 
     <div class="col-md-8">
         <div class="card  dashboard-card d-flex flex-row align-items-stretch">
-            <div class="card-body">
+            <div class="card-body" style="position: relative; height: 360px;">
                 <h6>Statistik Peminjaman Per Bulan</h6>
-                <canvas id="chartPeminjaman"></canvas>
+                <div class="chart-container">
+                    <canvas id="chartPeminjaman"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card  dashboard-card d-flex flex-row align-items-stretch">
-            <div class="card-body">
+        <div class="card  dashboard-card d-flex flex-row align-items-stretch" style="overflow: hidden;">
+            <div class="card-body" style="position: relative; height: 360px;">
                 <h6>Status Peminjaman</h6>
-                <canvas id="chartStatus"></canvas>
+                <div class="chart-container">
+                    <canvas id="chartStatus"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -156,6 +160,10 @@ new Chart(document.getElementById('chartPeminjaman'), {
             fill: true,
             tension: 0.3
         }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
     }
 });
 
@@ -166,6 +174,18 @@ new Chart(document.getElementById('chartStatus'), {
         datasets: [{
             data: Object.values(statusData)
         }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    boxWidth: 12
+                }
+            }
+        }
     }
 });
 </script>

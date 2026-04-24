@@ -1,6 +1,6 @@
 :root {
-    --color-primary: #4F46E5;
-    --color-primary-hover: #4338CA;
+    --color-primary: #1E293B;
+    --color-primary-hover: #334155;
 
     --color-sidebar: #1E293B;
     --color-sidebar-hover: #334155;
@@ -310,7 +310,7 @@ label.form-label {
 }
 
 .sidebar .nav-link.active {
-    background: var(--color-primary);
+    background: var(--color-primary-hover);
     color: #fff;
 }
 
@@ -371,6 +371,17 @@ label.form-label {
     min-width: 110px;
 }
 
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 @media (max-width: 768px) {
     .sticky-action-bar {
         padding: 12px;
@@ -403,5 +414,10 @@ label.form-label {
     .dashboard-card h3,
     .dashboard-card h2 {
         font-size: 1.4rem;
+    }
+
+    #chartPeminjaman,
+    #chartStatus {
+        height: 280px !important;
     }
 }

@@ -82,7 +82,7 @@
 
                 <p class="text-center mt-4 small">
                     Belum punya akun?
-                    <a href="{{ route('register') }}" class="fw-medium">
+                    <a href="{{ route('register') }}" class="link-muted">
                         Daftar
                     </a>
                 </p>
